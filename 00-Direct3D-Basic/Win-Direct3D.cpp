@@ -13,11 +13,11 @@
 #define MAX_LOADSTRING 100
 
 //DirectX 시스템 객체 포인터, COM interface이다.
-LPDIRECT3D9 d3d;
+LPDIRECT3D9 g_pD3DInterface;
 //DirectX 디바이스 객체(실제 화면을 출력하는 역할)
 //디바이스 인터페이스, 그래픽 드라이버, 비디오 카드에 대한 정보를 가지고 있다.
 //렌더링을 위해 사용한다.
-LPDIRECT3DDEVICE9 d3ddev;
+LPDIRECT3DDEVICE9 g_pD3DDevice;
 
 HWND g_hWnd;
 
@@ -30,7 +30,6 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름�
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -53,30 +52,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-	//d3d 
+	//g_pD3DInterface 
 	//Direct3D COM interface를 생성
 	//Direct3D 9C 버전에서는 32를 리턴한다.
-	if ((d3d = Direct3DCreate9(D3D_SDK_VERSION)) == nullptr) {
+	if ((g_pD3DInterface = Direct3DCreate9(D3D_SDK_VERSION)) == nullptr) {
 		return E_FAIL;
 	}
-	//d3d 디바이스 생성에 필요한 파라미터를 전달하고 그래픽 장치에 대한 정보를 받아오는 구조체
-	D3DPRESENT_PARAMETERS d3dpp;
-	//d3dpp의 메모리를 초기화한다.
-	//참고로 d3dpp의 기본값은 대부분 0이기 때문에 0으로 초기화하고 필요한 값만 변경하면 된다.
-	ZeroMemory(&d3dpp, sizeof(d3dpp));
+	//g_pD3DInterface 디바이스 생성에 필요한 파라미터를 전달하고 그래픽 장치에 대한 정보를 받아오는 구조체
+	D3DPRESENT_PARAMETERS sD3DParam;
+	//sD3DParam의 메모리를 초기화한다.
+	//참고로 sD3DParam의 기본값은 대부분 0이기 때문에 0으로 초기화하고 필요한 값만 변경하면 된다.
+	ZeroMemory(&sD3DParam, sizeof(sD3DParam));
 	//true:창, false:전체화면
-	d3dpp.Windowed = true;
+	sD3DParam.Windowed = true;
 	//화면 버퍼링 방식 지정
 	//D3DSWAPEFFECT_DISCARD: 플립방식으로 백버퍼의 값을 보존하지 않는 방식. 따라서 플리핑 시 주소만 교환하므로 빠르다.
 	//D3DSWAPEFFECT_FLIP: 플립방식으로 백버퍼의 값을 보존하는 방식. 플리핑 시 이전 백 버퍼의 내용을 다음 백버퍼에 복사하고 프론트 버퍼로 지정되므로 느리다. 백버퍼가 여러개일 수 있다.
 	//D3DSWAPEEFECT_COPY: 백버퍼를 고정하는 방식으로 프론트 버퍼에 백 버퍼의 픽셀을 복사한다.
-	d3dpp.SwapEffect = D3DSWAPEFFECT_DISCARD;
+	sD3DParam.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	//현재 윈도우와 동일한 색상 정보를 갖는 백버퍼를 사용
-	d3dpp.BackBufferFormat = D3DFMT_UNKNOWN;
+	sD3DParam.BackBufferFormat = D3DFMT_UNKNOWN;
 	//Direct3D를 사용할 윈도우 핸들
-	d3dpp.hDeviceWindow = g_hWnd;
+	sD3DParam.hDeviceWindow = g_hWnd;
 	//Direct3D 디바이스 객체를 생성
-	if (FAILED(d3d->CreateDevice(D3DADAPTER_DEFAULT,
+	if (FAILED(g_pD3DInterface->CreateDevice(D3DADAPTER_DEFAULT,
 		//그래픽 디바이스 타입을 정한다.
 		//그래픽 가속을 위해 HAL(Hardware Abstraction Layer)를 사용한다.
 		D3DDEVTYPE_HAL,
@@ -87,26 +86,29 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		//D3DCREATE_HARDWARE_VERTEXPROCESSING: 하드웨어에서 처리
 		D3DCREATE_SOFTWARE_VERTEXPROCESSING,
 		//D3DPRESENT_PARAMETERS의 포인터
-		&d3dpp,
+		&sD3DParam,
 		//LPDIRECT3DDEVICE9의 포인터(이중포인터)
-		&d3ddev))) {
+		&g_pD3DDevice))) {
 		return E_FAIL;
 	};
 
 	//render
 	//백버퍼를 지정된 색으로 지운다(비운다)
 	//첫번재, 두번째 매개변수는 사용되지 않는다.
-	//세번째는 백버퍼를 비워야하므로 D3DCLEAR_TARGET을 지정(?)
-	//네번재는 색을 지정, 255가 1.0이다.
-	d3ddev->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 40, 100), 1.0f, 0);
-	//d3d에서 비디오 메모리를 컨트롤 하기 위해 잠금을 해지한다.
-	//용도1. d3d 메모리 컨트롤
+	//세번째는 백버퍼를 비워야하므로 D3DCLEAR_TARGET을 지정, D3DCLEAR_TARGET: 백버퍼를 지우겠다는 뜻.
+	//네번재는 D3DCOLOR_XRGB 매크로를 통해 색을 지정, XRGB는 Alpha값을 안쓴다는 뜻. 255가 1.0이다.
+	g_pD3DDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 40, 100), 1.0f, 0);
+	//g_pD3DInterface에서 비디오 메모리를 컨트롤 하기 위해 잠금을 해지한다.
+	//용도1. g_pD3DInterface 메모리 컨트롤
 	//용도2. BeginScene()을 호출하면 메모리에 단독으로 액세스 할 수 있기 때문에 비디오 RAM 버퍼를 잠금 또는 해지할 때 사용
-	d3ddev->BeginScene();
-	//BeginScene()로 잠금해지된 비디오 메모리를 잠근다.
-	d3ddev->EndScene();
-	//백버퍼를 프론트버퍼로 교환한다.
-	d3ddev->Present(nullptr, nullptr, nullptr, nullptr);
+	if (SUCCEEDED(g_pD3DDevice->BeginScene())) {
+		//여기서 화면을 그린다.
+
+		//BeginScene()로 잠금해지된 비디오 메모리를 잠근다.
+		g_pD3DDevice->EndScene();
+		//백버퍼를 프론트버퍼로 교환(플리핑)한다.
+		g_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
+	};
 
     MSG msg;
 
@@ -120,9 +122,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
-	//release d3d
-	d3ddev->Release();
-	d3d->Release();
+	//release g_pD3DInterface
+	//디바이스를 먼저 해제한다.
+	if(g_pD3DDevice != nullptr) g_pD3DDevice->Release();
+	if (g_pD3DInterface != nullptr) g_pD3DInterface->Release();
 
     return (int) msg.wParam;
 }
@@ -185,16 +188,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-//
-//  함수: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  용도: 주 창의 메시지를 처리합니다.
-//
-//  WM_COMMAND  - 응용 프로그램 메뉴를 처리합니다.
-//  WM_PAINT    - 주 창을 그립니다.
-//  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
-//
-//
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
@@ -205,9 +198,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // 메뉴 선택을 구문 분석합니다:
             switch (wmId)
             {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
                 break;
@@ -218,37 +208,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-            EndPaint(hWnd, &ps);
+		//direct3d를 사용하므로 GDI를 사용하지 않는다.
+            //PAINTSTRUCT ps;
+            //HDC hdc = BeginPaint(hWnd, &ps);
+            //// TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+            //EndPaint(hWnd, &ps);
         }
         break;
     case WM_DESTROY:
-        PostQuitMessage(0);
+        PostQuitMessage(0);//WM_QUIT 메시지를 발생
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
     }
     return 0;
-}
-
-// 정보 대화 상자의 메시지 처리기입니다.
-INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
-{
-    UNREFERENCED_PARAMETER(lParam);
-    switch (message)
-    {
-    case WM_INITDIALOG:
-        return (INT_PTR)TRUE;
-
-    case WM_COMMAND:
-        if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
-        {
-            EndDialog(hDlg, LOWORD(wParam));
-            return (INT_PTR)TRUE;
-        }
-        break;
-    }
-    return (INT_PTR)FALSE;
 }
