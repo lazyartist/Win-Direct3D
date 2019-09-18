@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CApp.h"
-
+#include <iostream>
 
 CApp::CApp() {
 }
@@ -14,5 +14,11 @@ void CApp::Init(CD3DFramework * pD3DFramework) {
 }
 
 void CApp::Update(DWORD fDeltaTime) {
-	OutputDebugString("Update");
+	char szText[99] = {};
+	sprintf_s(szText, 99, "Update %d\n", fDeltaTime);
+	OutputDebugString(szText);
+}
+
+void CApp::Render(DWORD fDeltaTime) {
+	OutputDebugString("Render");
 }

@@ -11,15 +11,15 @@ CD3DFramework::CD3DFramework() {
 CD3DFramework::~CD3DFramework() {
 }
 
-HRESULT CD3DFramework::Init(HWND hWnd, IApp * pD3DApp, float fFrameTime) {
-	this->g_hWnd = hWnd;
-	this->pD3DApp = pD3DApp;
+HRESULT CD3DFramework::Init(HWND hWnd, IApp * pApp, float fFrameTime) {
+	this->hWnd = hWnd;
+	this->pApp = pApp;
 	this->fFrameTime = fFrameTime;
 
-	if ((g_pD3DInterface = Direct3DCreate9(D3D_SDK_VERSION)) == nullptr) {
+	if ((pD3DInterface = Direct3DCreate9(D3D_SDK_VERSION)) == nullptr) {
 		return E_FAIL;
 	}
-	//g_pD3DInterface 디바이스 생성에 필요한 파라미터를 전달하고 그래픽 장치에 대한 정보를 받아오는 구조체
+	//pD3DInterface 디바이스 생성에 필요한 파라미터를 전달하고 그래픽 장치에 대한 정보를 받아오는 구조체
 	D3DPRESENT_PARAMETERS sD3DParam;
 	//sD3DParam의 메모리를 초기화한다.
 	//참고로 sD3DParam의 기본값은 대부분 0이기 때문에 0으로 초기화하고 필요한 값만 변경하면 된다.
@@ -34,14 +34,14 @@ HRESULT CD3DFramework::Init(HWND hWnd, IApp * pD3DApp, float fFrameTime) {
 	//현재 윈도우와 동일한 색상 정보를 갖는 백버퍼를 사용
 	sD3DParam.BackBufferFormat = D3DFMT_UNKNOWN;
 	//Direct3D를 사용할 윈도우 핸들
-	sD3DParam.hDeviceWindow = g_hWnd;
+	sD3DParam.hDeviceWindow = hWnd;
 	//Direct3D 디바이스 객체를 생성
-	if (FAILED(g_pD3DInterface->CreateDevice(D3DADAPTER_DEFAULT,
+	if (FAILED(pD3DInterface->CreateDevice(D3DADAPTER_DEFAULT,
 		//그래픽 디바이스 타입을 정한다.
 		//그래픽 가속을 위해 HAL(Hardware Abstraction Layer)를 사용한다.
 		D3DDEVTYPE_HAL,
 		//윈도우 핸들
-		g_hWnd,
+		hWnd,
 		//D3DCREATE_SOFTWARE_VERTEXPROCESSING: 3D 계산을 소프트웨어로 한다.
 		//D3DCREATE_MIXED_VERTEXPROCESSING: 소프트웨어와 하드웨어 분할처리
 		//D3DCREATE_HARDWARE_VERTEXPROCESSING: 하드웨어에서 처리
@@ -49,7 +49,7 @@ HRESULT CD3DFramework::Init(HWND hWnd, IApp * pD3DApp, float fFrameTime) {
 		//D3DPRESENT_PARAMETERS의 포인터
 		&sD3DParam,
 		//LPDIRECT3DDEVICE9의 포인터(이중포인터)
-		&g_pD3DDevice))) {
+		&pD3DDevice))) {
 		return E_FAIL;
 	};
 
@@ -59,15 +59,16 @@ HRESULT CD3DFramework::Init(HWND hWnd, IApp * pD3DApp, float fFrameTime) {
 
 bool CD3DFramework::UpdateFrame() {
 	DWORD dTime = timeGetTime();
-	if (dTime - dPrevFrameTime > fFrameTime) {
+	if (dTime - dPrevFrameTime >= fFrameTime) {
 		dDeltaTime = dTime - dPrevFrameTime;
+		dPrevFrameTime = dTime;
 		return true;
 	}
 	return false;
 }
 
 void CD3DFramework::Update() {
-	pD3DApp->Update(dDeltaTime);
+	pApp->Update(dDeltaTime);
 }
 
 void CD3DFramework::Render() {
@@ -76,17 +77,17 @@ void CD3DFramework::Render() {
 	//첫번재, 두번째 매개변수는 사용되지 않는다.
 	//세번째는 백버퍼를 비워야하므로 D3DCLEAR_TARGET을 지정, D3DCLEAR_TARGET: 백버퍼를 지우겠다는 뜻.
 	//네번재는 D3DCOLOR_XRGB 매크로를 통해 색을 지정, XRGB는 Alpha값을 안쓴다는 뜻. 255가 1.0이다.
-	g_pD3DDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 40, 100), 1.0f, 0);
-	//g_pD3DInterface에서 비디오 메모리를 컨트롤 하기 위해 잠금을 해지한다.
-	//용도1. g_pD3DInterface 메모리 컨트롤
+	pD3DDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 40, 100), 1.0f, 0);
+	//pD3DInterface에서 비디오 메모리를 컨트롤 하기 위해 잠금을 해지한다.
+	//용도1. pD3DInterface 메모리 컨트롤
 	//용도2. BeginScene()을 호출하면 메모리에 단독으로 액세스 할 수 있기 때문에 비디오 RAM 버퍼를 잠금 또는 해지할 때 사용
-	if (SUCCEEDED(g_pD3DDevice->BeginScene())) {
+	if (SUCCEEDED(pD3DDevice->BeginScene())) {
 		//여기서 화면을 그린다.
-
+		pApp->Render(dDeltaTime);
 		//BeginScene()로 잠금해지된 비디오 메모리를 잠근다.
-		g_pD3DDevice->EndScene();
+		pD3DDevice->EndScene();
 		//백버퍼를 프론트버퍼로 교환(플리핑)한다.
-		g_pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
+		pD3DDevice->Present(nullptr, nullptr, nullptr, nullptr);
 	};
 }
 

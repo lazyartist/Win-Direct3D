@@ -9,16 +9,16 @@ class CD3DFramework {
 public:
 	CD3DFramework();
 	~CD3DFramework();
-	HRESULT Init(HWND hWnd, IApp *pD3DApp, float fFrameTime);
+	HRESULT Init(HWND hWnd, IApp *pApp, float fFrameTime);
 	bool UpdateFrame();
 	void Update();
 	void Render();
 	void Release();
 
-	LPDIRECT3D9 g_pD3DInterface;
-	LPDIRECT3DDEVICE9 g_pD3DDevice;
-	HWND g_hWnd;
-	IApp *pD3DApp;
+	LPDIRECT3D9 pD3DInterface;
+	LPDIRECT3DDEVICE9 pD3DDevice;
+	HWND hWnd;
+	IApp *pApp;
 	DWORD dPrevFrameTime;
 	DWORD dDeltaTime;
 	float fFrameTime;

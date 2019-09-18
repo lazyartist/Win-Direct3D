@@ -52,13 +52,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         return FALSE;
     }
 
-	//g_pD3DInterface 
+	//pD3DInterface 
 	//Direct3D COM interface를 생성
 	//Direct3D 9C 버전에서는 32를 리턴한다.
 	if ((g_pD3DInterface = Direct3DCreate9(D3D_SDK_VERSION)) == nullptr) {
 		return E_FAIL;
 	}
-	//g_pD3DInterface 디바이스 생성에 필요한 파라미터를 전달하고 그래픽 장치에 대한 정보를 받아오는 구조체
+	//pD3DInterface 디바이스 생성에 필요한 파라미터를 전달하고 그래픽 장치에 대한 정보를 받아오는 구조체
 	D3DPRESENT_PARAMETERS sD3DParam;
 	//sD3DParam의 메모리를 초기화한다.
 	//참고로 sD3DParam의 기본값은 대부분 0이기 때문에 0으로 초기화하고 필요한 값만 변경하면 된다.
@@ -98,8 +98,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 	//세번째는 백버퍼를 비워야하므로 D3DCLEAR_TARGET을 지정, D3DCLEAR_TARGET: 백버퍼를 지우겠다는 뜻.
 	//네번재는 D3DCOLOR_XRGB 매크로를 통해 색을 지정, XRGB는 Alpha값을 안쓴다는 뜻. 255가 1.0이다.
 	g_pD3DDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 40, 100), 1.0f, 0);
-	//g_pD3DInterface에서 비디오 메모리를 컨트롤 하기 위해 잠금을 해지한다.
-	//용도1. g_pD3DInterface 메모리 컨트롤
+	//pD3DInterface에서 비디오 메모리를 컨트롤 하기 위해 잠금을 해지한다.
+	//용도1. pD3DInterface 메모리 컨트롤
 	//용도2. BeginScene()을 호출하면 메모리에 단독으로 액세스 할 수 있기 때문에 비디오 RAM 버퍼를 잠금 또는 해지할 때 사용
 	if (SUCCEEDED(g_pD3DDevice->BeginScene())) {
 		//여기서 화면을 그린다.
@@ -122,7 +122,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         }
     }
 
-	//release g_pD3DInterface
+	//release pD3DInterface
 	//디바이스를 먼저 해제한다.
 	if(g_pD3DDevice != nullptr) g_pD3DDevice->Release();
 	if (g_pD3DInterface != nullptr) g_pD3DInterface->Release();

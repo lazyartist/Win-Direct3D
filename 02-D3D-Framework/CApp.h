@@ -8,6 +8,7 @@ public:
 	~CApp();
 	void Init(CD3DFramework *pD3DFramework);
 	void Update(DWORD fDeltaTime);
+	void Render(DWORD fDeltaTime);
 
 	CD3DFramework *pD3DFramework;
 };
