@@ -53,6 +53,8 @@ HRESULT CD3DFramework::Init(HWND hWnd, IApp * pApp, float fFrameTime) {
 		return E_FAIL;
 	};
 
+	pApp->Init(this);
+
 	timeBeginPeriod(1);
 	dPrevFrameTime = timeGetTime();
 }
@@ -92,5 +94,6 @@ void CD3DFramework::Render() {
 }
 
 void CD3DFramework::Release() {
+	pApp->Release();
 	timeEndPeriod(1);
 }
