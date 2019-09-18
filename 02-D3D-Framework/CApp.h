@@ -1,6 +1,24 @@
 #pragma once
 #include "IApp.h"
+//#include <d3d9.h>
+#include <DirectXMath.h>
+//#include <d3d12.h>
+//#include <d3dx9math.h>
 class CD3DFramework;
+
+using namespace DirectX;
+struct SVertex {
+	float x, y, z;
+	DWORD color;
+};
+struct SVertex2 {
+	//DirectX::XMFLOAT3 sPosition;
+	XMFLOAT3 sPosition;
+	//float x, y, z;
+	DWORD color;
+};
+#define D3DFVF_SVertex (D3DFVF_XYZ | D3DFVF_DIFFUSE)
+#define D3DFVF_SVertex2 (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 
 class CApp : public IApp {
 public:
@@ -11,5 +29,10 @@ public:
 	void Render(DWORD fDeltaTime);
 
 	CD3DFramework *pD3DFramework;
+	SVertex sVertices[3] = {
+		{100.0f, 100.0f, 0.0f, 0xffff0000},
+		{200.0f, 200.0f, 0.0f, 0xff00ff00},
+		{300.0f, 100.0f, 0.0f, 0xff0000ff}
+	};
 };
 
