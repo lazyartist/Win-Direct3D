@@ -8,8 +8,7 @@ class CD3DFramework;
 
 using namespace DirectX;
 struct SVertex {
-	float x, y, z;
-	float rhw;
+	float x, y, z, rhw;
 	DWORD color;
 };
 struct SVertex2 {
@@ -18,7 +17,6 @@ struct SVertex2 {
 	//float x, y, z;
 	DWORD color;
 };
-//#define D3DFVF_SVertex (D3DFVF_XYZ | D3DFVF_DIFFUSE)
 #define D3DFVF_SVertex (D3DFVF_XYZRHW | D3DFVF_DIFFUSE)
 #define D3DFVF_SVertex2 (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 
