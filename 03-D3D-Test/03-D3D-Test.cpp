@@ -3,6 +3,7 @@
 #include "pch.h"
 #include <iostream>
 #include <d3d9.h>
+//#include <d3d.h>
 //#pragma comment (lib, "d3d9.lib")
 #include <DirectXMath.h>
 
@@ -14,6 +15,7 @@ using namespace DirectX;
 void TestMatrix();
 void TestMatrixLinear();
 void TestMatrixQuaternion();
+void TestMatrixTransformation();
 void printTitle(const char *title);
 void printMatrix(XMMATRIX &mat);
 void printMatrix(const char* title, XMMATRIX &mat);
@@ -23,14 +25,27 @@ void printVector(const char* title, XMVECTOR &vec);
 int main() {
 	//TestMatrix();
 	//TestMatrixLinear();
-	TestMatrixQuaternion();
+	//TestMatrixQuaternion();
+	TestMatrixTransformation();
 	return 0;
+}
+void TestMatrixTransformation() {
+	//월드, 뷰, 투영 행렬의 설정
+	//LPDIRECT3DDEVICE9 pD3DDevice = nullptr;//초기화필요
+	//XMMATRIX matTransform;
+	//XMFLOAT4X4 matTransform2;
+	//XMStoreFloat4x4(&matTransform2, matTransform);
+	//pD3DDevice->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&matTransform2);
+	//뷰 변환 행렬 함수
+	//XMMatrixLookAtLH();
+	//투영 변환 행렬 함수
+	//XMMatrixPerspectiveFovLH();
 }
 void TestMatrixQuaternion() {
 	printTitle("회전 행렬을 쿼터니온으로 만드는 함수");
 	{
 		XMMATRIX matRotation = XMMatrixRotationX(PI);
-		printMatrix("matRotation", matRotation);
+		printMatrix("matTransform", matRotation);
 		/*
 		1.0     0.0     0.0     0.0
 		0.0     -1.0    0.0     0.0
@@ -67,7 +82,7 @@ void TestMatrixQuaternion() {
 		1.0     0.0     0.0     -0.0
 		*/
 		XMMATRIX matRotation = XMMatrixRotationQuaternion(vQuaternion);
-		printMatrix("matRotation", matRotation);
+		printMatrix("matTransform", matRotation);
 		/*
 		1.0     0.0     0.0     0.0
 		0.0     -1.0    -0.0    0.0
@@ -241,11 +256,11 @@ void TestMatrix() {
 		XMVECTOR fDeterminant;
 		//역행렬(회전행렬은 항상 역행렬이 존재)
 		XMMATRIX matInverse = XMMatrixInverse(&fDeterminant, matRotation);
-		printMatrix("matRotation", matRotation);
+		printMatrix("matTransform", matRotation);
 		printMatrix("matInverse", matInverse);
 		printf_s("- fDeterminant : %f\n", fDeterminant.vector4_f32[0]);
 		/*
-		- matRotation -
+		- matTransform -
 		1.0     0.0     0.0     0.0
 		0.0     1.0     0.3     0.0
 		0.0     -0.3    1.0     0.0
