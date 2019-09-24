@@ -35,6 +35,9 @@ HRESULT CD3DFramework::Init(HWND hWnd, IApp * pApp, float fFrameTime) {
 	sD3DParam.BackBufferFormat = D3DFMT_UNKNOWN;
 	//Direct3D를 사용할 윈도우 핸들
 	sD3DParam.hDeviceWindow = hWnd;
+	//D3D 파라미터의 z버퍼 설정
+	sD3DParam.EnableAutoDepthStencil = true;
+	sD3DParam.AutoDepthStencilFormat = D3DFMT_D24S8;
 	//Direct3D 디바이스 객체를 생성
 	if (FAILED(pD3DInterface->CreateDevice(D3DADAPTER_DEFAULT,
 		//그래픽 디바이스 타입을 정한다.
@@ -52,6 +55,8 @@ HRESULT CD3DFramework::Init(HWND hWnd, IApp * pApp, float fFrameTime) {
 		&pD3DDevice))) {
 		return E_FAIL;
 	};
+	//디바이스의 z버퍼 설정
+	pD3DDevice->SetRenderState(D3DRS_ZENABLE, true);
 
 	pApp->Init(this);
 
@@ -79,7 +84,7 @@ void CD3DFramework::Render() {
 	//첫번재, 두번째 매개변수는 사용되지 않는다.
 	//세번째는 백버퍼를 비워야하므로 D3DCLEAR_TARGET을 지정, D3DCLEAR_TARGET: 백버퍼를 지우겠다는 뜻.
 	//네번재는 D3DCOLOR_XRGB 매크로를 통해 색을 지정, XRGB는 Alpha값을 안쓴다는 뜻. 255가 1.0이다.
-	pD3DDevice->Clear(0, nullptr, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 40, 100), 1.0f, 0);
+	pD3DDevice->Clear(0, nullptr, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(0, 40, 100), 1.0f, 0);
 	//pD3DInterface에서 비디오 메모리를 컨트롤 하기 위해 잠금을 해지한다.
 	//용도1. pD3DInterface 메모리 컨트롤
 	//용도2. BeginScene()을 호출하면 메모리에 단독으로 액세스 할 수 있기 때문에 비디오 RAM 버퍼를 잠금 또는 해지할 때 사용

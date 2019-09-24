@@ -20,15 +20,14 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{6513BCD2-6C03-4DA0-AE6B-83A718FB1983}</ProjectGuid>
+    <ProjectGuid>{A6E115FA-93ED-4E8C-844C-5D4736C2569A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My02D3DFramework</RootNamespace>
+    <RootNamespace>My04D3DRender</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
-    <ProjectName>02-D3D-Framework</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -91,6 +90,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\02-D3D-Framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -105,6 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\02-D3D-Framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -148,18 +149,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="02-D3D-Framework.h" />
-    <ClInclude Include="CApp.h" />
-    <ClInclude Include="CD3DFramework.h" />
-    <ClInclude Include="IApp.h" />
+    <ClInclude Include="04-D3D-Render.h" />
+    <ClInclude Include="CAppRender.h" />
+    <ClInclude Include="CAppTriangle.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="02-D3D-Framework.cpp" />
-    <ClCompile Include="CApp.cpp" />
-    <ClCompile Include="CD3DFramework.cpp" />
+    <ClCompile Include="04-D3D-Render.cpp" />
+    <ClCompile Include="CAppRender.cpp" />
+    <ClCompile Include="CAppTriangle.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -168,11 +168,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="02-D3D-Framework.rc" />
+    <ResourceCompile Include="04-D3D-Render.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="02-D3D-Framework.ico" />
+    <Image Include="04-D3D-Render.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\02-D3D-Framework\02-D3D-Framework.vcxproj">
+      <Project>{6513bcd2-6c03-4da0-ae6b-83a718fb1983}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
