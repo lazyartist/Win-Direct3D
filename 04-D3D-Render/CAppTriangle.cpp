@@ -58,4 +58,8 @@ void CAppTriangle::OnRender(DWORD fDeltaTime) {
 
 void CAppTriangle::OnRelease() {
 	dlog("OnRelease");
+	if (pVertexBufferInterface != nullptr) {
+		pVertexBufferInterface->Release();
+		pVertexBufferInterface = nullptr;
+	}
 }

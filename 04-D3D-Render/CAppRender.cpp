@@ -11,8 +11,9 @@ CAppRender::~CAppRender() {
 
 void CAppRender::OnInit() {
 	//버텍스버퍼 생성
+	//Axis Vertices
 	pD3DFramework->pD3DDevice->CreateVertexBuffer(
-		sizeof(SVertex) * sizeof(sVertices) / sizeof(SVertex),//버텍스크기*개수
+		sizeof(SVertex) * sizeof(sAxisVertices) / sizeof(SVertex),//버텍스크기*개수
 		D3DUSAGE_WRITEONLY,//리소스 사용법을 지정(D3DUSAGE_WRITEONLY:어플에서 버텍스버퍼의 쓰기 조작만 수행함을 지정)
 		D3DFVF_SVertex,//버텍스데이터 사용법
 		D3DPOOL_DEFAULT,//리소스버퍼를 저장할 시스템, 비디오 메모리를 지정(D3DPOOL_DEFAULT:최적의 메모리를 자동 선택)
@@ -23,18 +24,33 @@ void CAppRender::OnInit() {
 	//Lock을 하면 다른 자원이 접근할 수 없게되고 정점을 저장할 메모리 포인터를 반환한다.
 	void *pVertices;//버텍스를 저장할 메모리의 시작 주소를 받을 변수
 	pVertexBufferInterface->Lock(0, 0, (void**)&pVertices, 0);
-	memcpy(pVertices, sVertices, sizeof(sVertices));//버텍스버퍼에 버텍스를 메모리 복사
+	memcpy(pVertices, sAxisVertices, sizeof(sAxisVertices));//버텍스버퍼에 버텍스를 메모리 복사
 	pVertexBufferInterface->Unlock();//잠금을 해제
+	//Triangle Vertices
+	pD3DFramework->pD3DDevice->CreateVertexBuffer(
+		sizeof(SVertex) * sizeof(sTriangleVertices) / sizeof(SVertex),//버텍스크기*개수
+		D3DUSAGE_WRITEONLY,//리소스 사용법을 지정(D3DUSAGE_WRITEONLY:어플에서 버텍스버퍼의 쓰기 조작만 수행함을 지정)
+		D3DFVF_SVertex,//버텍스데이터 사용법
+		D3DPOOL_DEFAULT,//리소스버퍼를 저장할 시스템, 비디오 메모리를 지정(D3DPOOL_DEFAULT:최적의 메모리를 자동 선택)
+		&pVertexBufferInterface2,//반환된 버텍스버퍼를 받을 포인터
+		nullptr//사용하지 않는 변수, nullptr
+	);
+	//버텍스버퍼에 버텍스를 저장하기 위해 잠금
+	//Lock을 하면 다른 자원이 접근할 수 없게되고 정점을 저장할 메모리 포인터를 반환한다.
+	//void *pVertices;//버텍스를 저장할 메모리의 시작 주소를 받을 변수
+	pVertexBufferInterface2->Lock(0, 0, (void**)&pVertices, 0);
+	memcpy(pVertices, sTriangleVertices, sizeof(sTriangleVertices));//버텍스버퍼에 버텍스를 메모리 복사
+	pVertexBufferInterface2->Unlock();//잠금을 해제
 
 	//Viewport
-	D3DVIEWPORT9 d3dViewport9 = {};
-	d3dViewport9.X = 0;
-	d3dViewport9.Y = 0;
-	d3dViewport9.Width = 800;
-	d3dViewport9.Height = 800;
-	d3dViewport9.MinZ = 0.0;
-	d3dViewport9.MaxZ = 0.0;
-	pD3DFramework->pD3DDevice->SetViewport(&d3dViewport9);
+	//D3DVIEWPORT9 d3dViewport9 = {};
+	//d3dViewport9.X = 0;//렌더링타겟 표면에서 뷰포트가 시작될 x위치
+	//d3dViewport9.Y = 0;//렌더링타겟 표면에서 뷰포트가 시작될 y위치
+	//d3dViewport9.Width = 800;//렌더링타겟에서 출력될 가로 크기
+	//d3dViewport9.Height = 800;//렌더링타겟에서 출력될 세로 크기
+	//d3dViewport9.MinZ = 0.0;
+	//d3dViewport9.MaxZ = 1.0;
+	//pD3DFramework->pD3DDevice->SetViewport(&d3dViewport9);
 }
 
 void CAppRender::OnUpdate(DWORD fDeltaTime) {
@@ -50,21 +66,25 @@ void CAppRender::OnRender(DWORD fDeltaTime) {
 	pD3DFramework->pD3DDevice->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&f44);
 	//View transformation
 	XMMATRIX matView = XMMatrixLookAtLH(
-		{ 0.0, 0.0, -10.0 },//카메라 위치
+		{ 10.0, 10.0, -10.0 },//카메라 위치
 		{ 0.0, 0.0, 0.0 },//바라보는 방향
 		{ 0.0, 1.0, 0.0 }//카메라에서 위쪽으로 향하는 벡터
 	);
-	//XMFLOAT4X4 f44_2;
 	XMStoreFloat4x4(&f44, matView);
 	pD3DFramework->pD3DDevice->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&f44);
 	//Projection trasformation
-	XMMATRIX matProj = XMMatrixPerspectiveFovLH(
-		Const::fPI() / 2.0,
-		1.0,
+	//XMMATRIX matProj = XMMatrixPerspectiveFovLH(
+		//Const::fPI() / 2.0,
+		//1.0,
+		//1.0,//가까운 면의 Z값(음수를 넣으니 WM_SYSCOLORCHANGE가 계속와서 프로그램 진행이 안됨)
+		//100.0//먼 면의 Z값
+	//);
+	XMMATRIX matProj = XMMatrixOrthographicLH(
+		50.0,
+		50.0,
 		1.0,//가까운 면의 Z값(음수를 넣으니 WM_SYSCOLORCHANGE가 계속와서 프로그램 진행이 안됨)
 		100.0//먼 면의 Z값
 	);
-	//XMFLOAT4X4 f44_3;
 	XMStoreFloat4x4(&f44, matProj);
 	pD3DFramework->pD3DDevice->SetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&f44);
 
@@ -86,14 +106,42 @@ void CAppRender::OnRender(DWORD fDeltaTime) {
 	//DrawIndexedPrimitive(), DrawIndexedPrimitiveUP()함수가 게임개발에 많이 사용된다.
 	//DrawIndexedPrimitive()함수가 가장 빠르다.
 	pD3DFramework->pD3DDevice->DrawPrimitive(
+		D3DPT_LINELIST,
+		//D3DPT_TRIANGLESTRIP,
+		0, //출력을 시작할 버텍스 인덱스
+		3 //출력할 개수, 첫번째 파라미터 D3DPRIMITIVETYPE에 영향을 받는다.
+	);
+
+	pD3DFramework->pD3DDevice->SetStreamSource(
+		0,//0으로 지정
+		pVertexBufferInterface2, //버텍스버퍼
+		0, //메모리시작 위치
+		sizeof(SVertex) //버텍스 크기
+	);
+	//2. D3D에 정점 셰이더 정보를 지정, 대부분 FVF만 지정한다.
+	pD3DFramework->pD3DDevice->SetFVF(D3DFVF_SVertex);
+	//3. 기하 정보를 출력하기 위한 DrawPrimitive() 함수 호출
+	//DrawIndexedPrimitive(), DrawPrimitiveUP(), DrawIndexedPrimitiveUP()등이 있고
+	//DrawIndexedPrimitive(), DrawIndexedPrimitiveUP()함수가 게임개발에 많이 사용된다.
+	//DrawIndexedPrimitive()함수가 가장 빠르다.
+	pD3DFramework->pD3DDevice->DrawPrimitive(
 		D3DPT_TRIANGLESTRIP,
 		0, //출력을 시작할 버텍스 인덱스
 		1 //출력할 개수, 첫번째 파라미터 D3DPRIMITIVETYPE에 영향을 받는다.
 	);
+
 
 	//Light Off
 	pD3DFramework->pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
 }
 
 void CAppRender::OnRelease() {
+	if (pVertexBufferInterface != nullptr) {
+		pVertexBufferInterface->Release();
+		pVertexBufferInterface = nullptr;
+	}
+	if (pVertexBufferInterface2 != nullptr) {
+		pVertexBufferInterface2->Release();
+		pVertexBufferInterface2 = nullptr;
+	}
 }

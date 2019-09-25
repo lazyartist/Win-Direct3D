@@ -20,6 +20,5 @@ public:
 	virtual void OnRelease() = 0;
 
 	CD3DFramework *pD3DFramework;
-	LPDIRECT3DVERTEXBUFFER9 pVertexBufferInterface;//버텍스버퍼의 인터페이스
 };
 

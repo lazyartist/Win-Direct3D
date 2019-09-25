@@ -16,5 +16,6 @@ public:
 	{200.0f, 100.0f, 0.0f, 1.0f, 0xff00ff00},
 	{300.0f, 200.0f, 0.0f, 1.0f, 0xff0000ff}
 	};
+	LPDIRECT3DVERTEXBUFFER9 pVertexBufferInterface;//버텍스버퍼의 인터페이스
 };
 
