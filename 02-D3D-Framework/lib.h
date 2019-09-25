@@ -10,6 +10,58 @@
 #include <mmsystem.h>
 #pragma comment(lib,"winmm")
 
+// ===== vertex =====
+#define D3DFVF_SVertex (D3DFVF_XYZ | D3DFVF_DIFFUSE)
+struct SVertex {
+	float x, y, z;
+	DWORD color;
+};
+#define D3DFVF_SVertexRHW (D3DFVF_XYZRHW | D3DFVF_DIFFUSE)
+struct SVertexRHW {
+	float x, y, z, rhw;
+	DWORD color;
+};
+// ===== vertex ===== end
+
+static class Const {
+public:
+	// string length
+	const static int szMax_Path = MAX_PATH;
+	const static int szMax_ItemCount = _MAX_INT_DIG;
+	const static int szMax_ListColumnName = 32;
+	const static int szMax_ItemLine = MAX_PATH;
+	const static int szMax_StageName = MAX_PATH;
+
+	// float
+	// static float는 클래스 내부에서 초기화 할 수 없고 int만 가능하기 때문에 함수로 만든다.
+	// 프레임당 이동할 거리만큼만 이동하면 "이동 -> 아이들 -> 이동" 이런식으로 아이들 상태가 들어가서 애니메이션이 끊긴다.
+	// 따라서 프레임 당 이동거리를 늘려 한 프레임에 이동이 완료되지 못하도록해서 중간에 아이들 상태가 되지않게 하기위한 값.
+	//const static int fSpeedPerFrameMagnification = 2;
+	static float fSpeedPerFrameMagnification() {
+		return 2.0;
+	};
+	static float fGravity() {
+		return 800.0;
+		//return 10.0;
+		//return 9.8;
+	};
+	static float fPI() {
+		return 3.14159265359;
+	};
+	static float fPI14() {
+		return 3.14159265359 / 4;
+	};
+	static float fPI34() {
+		return 3.14159265359 * 3 / 4;
+	};
+
+	// string
+	//static const char *szActionTypesAsString[EActionType::EActionType_Count];
+	//static const char *szUnitTypesAsString[EUnitType::EUnitType_Count];
+	//static const char *szControlTypesAsString[EControlType::EControlType_Count];
+	//static const char *szStageSettingFileName;
+};
+
 // ===== log =====
 // for string
 inline void _dlog(UINT count, const char *args, ...) {

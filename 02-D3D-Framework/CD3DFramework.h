@@ -1,11 +1,10 @@
 #pragma once
 #include <d3d9.h>
 //#include "CApp.h"
-//#include "IApp.h"
-#include "CApp.h"
 #include <mmsystem.h>//timeBeginPeriod
 #pragma comment(lib,"winmm")
 
+class CApp;
 class CD3DFramework {
 public:
 	CD3DFramework();

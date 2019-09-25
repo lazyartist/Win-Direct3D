@@ -1,9 +1,11 @@
 #pragma once
 #include <d3d9.h>
 #include <DirectXMath.h>
+#include "lib.h"
+#include "CD3DFramework.h"
 
 using namespace DirectX;
-class CD3DFramework;
+//class CD3DFramework;
 class CApp {
 public:
 	CApp();
@@ -18,6 +20,6 @@ public:
 	virtual void OnRelease() = 0;
 
 	CD3DFramework *pD3DFramework;
-	LPDIRECT3DVERTEXBUFFER9 pVertexBuffer;//버텍스버퍼의 인터페이스
+	LPDIRECT3DVERTEXBUFFER9 pVertexBufferInterface;//버텍스버퍼의 인터페이스
 };
 

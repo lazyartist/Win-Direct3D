@@ -31,8 +31,9 @@ void CApp::Render(DWORD fDeltaTime) {
 
 void CApp::Release() {
 	dlog("Release");
-	if (pVertexBuffer != nullptr) {
-		pVertexBuffer->Release();
+	if (pVertexBufferInterface != nullptr) {
+		pVertexBufferInterface->Release();
+		pVertexBufferInterface = nullptr;
 	}
 	OnRelease();
 }
