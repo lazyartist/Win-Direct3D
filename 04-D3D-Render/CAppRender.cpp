@@ -9,14 +9,14 @@ CAppRender::CAppRender() {
 CAppRender::~CAppRender() {
 }
 
-void CAppRender::Init(CD3DFramework * pD3DFramework) {
+void CAppRender::OnInit() {
 }
 
-void CAppRender::Update(unsigned long fDeltaTime) {
+void CAppRender::OnUpdate(DWORD fDeltaTime) {
 }
 
-void CAppRender::Render(unsigned long fDeltaTime) {
+void CAppRender::OnRender(DWORD fDeltaTime) {
 }
 
-void CAppRender::Release() {
+void CAppRender::OnRelease() {
 }

@@ -1,15 +1,15 @@
 #pragma once
-#include "IApp.h"
+#include "CApp.h"
 //#include "X:\StudySources\Win-Direct3D\2-d3d-framework22\app.h"
 class CAppRender :
-	public IApp {
+	public CApp {
 public:
 	CAppRender();
 	~CAppRender();
 
-	void Init(CD3DFramework * pD3DFramework);
-	void Update(unsigned long fDeltaTime);
-	void Render(unsigned long fDeltaTime);
-	void Release();
+	virtual void OnInit();
+	virtual void OnUpdate(DWORD fDeltaTime);
+	virtual void OnRender(DWORD fDeltaTime);
+	virtual void OnRelease();
 };
 

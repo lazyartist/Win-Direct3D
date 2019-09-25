@@ -11,7 +11,7 @@ CD3DFramework::CD3DFramework() {
 CD3DFramework::~CD3DFramework() {
 }
 
-HRESULT CD3DFramework::Init(HWND hWnd, IApp * pApp, float fFrameTime) {
+HRESULT CD3DFramework::Init(HWND hWnd, CApp * pApp, float fFrameTime) {
 	this->hWnd = hWnd;
 	this->pApp = pApp;
 	this->fFrameTime = fFrameTime;

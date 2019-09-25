@@ -2,14 +2,16 @@
 #include <iostream>
 #include "CAppTriangle.h"
 #include "CD3DFramework.h"
+#include "lib.h"
 
 CAppTriangle::CAppTriangle() {
-	OutputDebugString("CAppTriangle\n");
+	dlog("CAppTriangle");
 }
 CAppTriangle::~CAppTriangle() {
-	OutputDebugString("~CAppTriangle\n");
+	dlog("~CAppTriangle");
 }
-void CAppTriangle::Init(CD3DFramework * pD3DFramework) {
+void CAppTriangle::OnInit() {
+	dlog("OnInit");
 	//버텍스버퍼 생성
 	pD3DFramework->pD3DDevice->CreateVertexBuffer(
 		sizeof(SVertex) * sizeof(sVertices) / sizeof(SVertex),//버텍스크기*개수
@@ -27,14 +29,15 @@ void CAppTriangle::Init(CD3DFramework * pD3DFramework) {
 	pVertexBuffer->Unlock();//잠금을 해제
 }
 
-void CAppTriangle::Update(unsigned long fDeltaTime) {
-	char szText[99] = {};
-	sprintf_s(szText, 99, "Update %d\n", fDeltaTime);
-	OutputDebugString(szText);
+void CAppTriangle::OnUpdate(DWORD fDeltaTime) {
+	/*char szText[99] = {};
+	sprintf_s(szText, 99, "OnUpdate %d", fDeltaTime);
+	dlog(szText);*/
+	dlog("OnUpdate", (int)fDeltaTime);
 }
 
-void CAppTriangle::Render(unsigned long fDeltaTime) {
-	OutputDebugString("Render child");
+void CAppTriangle::OnRender(DWORD fDeltaTime) {
+	dlog("OnRender");
 	//버텍스 출력
 	//1. 버텍스버퍼와 버텍스 포맷을 D3D 디바이스에 알려준다. 출력할 버텍스버퍼를 출력 스트림과 연결한다.
 	pD3DFramework->pD3DDevice->SetStreamSource(
@@ -56,5 +59,6 @@ void CAppTriangle::Render(unsigned long fDeltaTime) {
 	);
 }
 
-void CAppTriangle::Release() {
+void CAppTriangle::OnRelease() {
+	dlog("OnRelease");
 }

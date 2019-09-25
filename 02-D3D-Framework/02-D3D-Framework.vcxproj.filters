@@ -30,10 +30,10 @@
     <ClInclude Include="CD3DFramework.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="IApp.h">
+    <ClInclude Include="CApp.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CApp.h">
+    <ClInclude Include="lib.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

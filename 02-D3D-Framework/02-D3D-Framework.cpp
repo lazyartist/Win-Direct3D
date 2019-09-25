@@ -14,8 +14,8 @@ WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
 HWND g_hWnd;
-CD3DFramework g_cD3DFramework;
-CApp g_cApp;
+//CD3DFramework g_cD3DFramework;
+//CApp g_cApp;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -48,10 +48,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		if (g_cD3DFramework.UpdateFrame()) {
-			g_cD3DFramework.Update();
-			g_cD3DFramework.Render();
-		}
+		//if (g_cD3DFramework.UpdateFrame()) {
+		//	g_cD3DFramework.Update();
+		//	g_cD3DFramework.Render();
+		//}
 	}
 
 	return (int)msg.wParam;
@@ -80,7 +80,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 
 	HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, 0, 400, 400, nullptr, nullptr, hInstance, nullptr);
-		//CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 	g_hWnd = hWnd;
 
 	if (!hWnd) {
@@ -90,10 +89,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow) {
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
 
-	if (g_cD3DFramework.Init(hWnd, &g_cApp, 1000.0/60.0) == E_FAIL) {
-		MessageBox(g_hWnd, "d3d error", "", MB_OK);
-		return false;
-	};
+	//if (g_cD3DFramework.Init(hWnd, &g_cApp, 1000.0/60.0) == E_FAIL) {
+	//	MessageBox(g_hWnd, "d3d error", "", MB_OK);
+	//	return false;
+	//};
 
 	return TRUE;
 }

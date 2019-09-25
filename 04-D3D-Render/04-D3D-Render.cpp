@@ -3,6 +3,7 @@
 #include "CD3DFramework.h"
 //#include "CApp.h"
 #include "CAppTriangle.h"
+#include "lib.h"
 
 #define MAX_LOADSTRING 100
 
@@ -52,6 +53,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 			g_cD3DFramework.Render();
 		}
 	}
+	g_cD3DFramework.Release();
 
 	return (int)msg.wParam;
 }

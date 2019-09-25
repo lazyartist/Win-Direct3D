@@ -151,7 +151,7 @@
     <ClInclude Include="02-D3D-Framework.h" />
     <ClInclude Include="CApp.h" />
     <ClInclude Include="CD3DFramework.h" />
-    <ClInclude Include="IApp.h" />
+    <ClInclude Include="lib.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />

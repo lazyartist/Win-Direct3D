@@ -6,10 +6,10 @@ class CAppTriangle :
 public:
 	CAppTriangle();
 	virtual ~CAppTriangle();
-	virtual void Init(CD3DFramework *pD3DFramework);
-	virtual void Update(DWORD fDeltaTime);
-	virtual void Render(DWORD fDeltaTime);
-	virtual void Release();
+	virtual void OnInit();
+	virtual void OnUpdate(DWORD fDeltaTime);
+	virtual void OnRender(DWORD fDeltaTime);
+	virtual void OnRelease();
 
 	struct SVertex {
 		float x, y, z, rhw;
