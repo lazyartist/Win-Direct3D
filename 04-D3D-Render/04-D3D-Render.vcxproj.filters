@@ -27,10 +27,10 @@
     <ClInclude Include="04-D3D-Render.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CAppRender.h">
+    <ClInclude Include="CAppTriangle.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CAppTriangle.h">
+    <ClInclude Include="CAppAxisTriangle.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,10 +41,10 @@
     <ClCompile Include="04-D3D-Render.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CAppRender.cpp">
+    <ClCompile Include="CAppTriangle.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CAppTriangle.cpp">
+    <ClCompile Include="CAppAxisTriangle.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
