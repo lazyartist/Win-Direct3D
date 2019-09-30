@@ -9,11 +9,20 @@
 #include <math.h>
 #include <mmsystem.h>
 #pragma comment(lib,"winmm")
+#include <d3d9.h>
+#include <DirectXMath.h>
+//#include <DirectXMath.h>
+
+using namespace DirectX;
 
 // ===== vertex =====
 #define D3DFVF_SVertex (D3DFVF_XYZ | D3DFVF_DIFFUSE)
 struct SVertex {
 	float x, y, z;
+	DWORD color;
+};
+struct SVertex2{
+	XMFLOAT3 position;
 	DWORD color;
 };
 #define D3DFVF_SVertexRHW (D3DFVF_XYZRHW | D3DFVF_DIFFUSE)

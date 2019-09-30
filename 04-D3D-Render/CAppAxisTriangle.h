@@ -13,6 +13,19 @@ public:
 	virtual void OnRender(DWORD fDeltaTime);
 	virtual void OnRelease();
 
+	//SVertex sAxisVertices[6] = {
+	//{{-100.0, 0.0, 0.0}, 0xffff0000},
+	//{{100.0, 0.0, 0.0}, 0xffff0000},
+	//{{0.0, -100.0, 0.0}, 0xff00ff00},
+	//{{0.0, 100.0, 0.0}, 0xff00ff00},
+	//{{0.0, 0.0, -100.0}, 0xff0000ff},
+	//{{0.0, 0.0, 100.0}, 0xff0000ff},
+	//};
+	//SVertex sTriangleVertices[3] = {
+	//	{{0.0, 10.0, 0.0}, 0xffff0000 },
+	//	{{10.0, -10.0, 0.0}, 0xff00ff00},
+	//	{{-10.0, -10.0, 0.0}, 0xff0000ff},
+	//};
 	SVertex sAxisVertices[6] = {
 	{-100.0, 0.0, 0.0, 0xffff0000},
 	{100.0, 0.0, 0.0, 0xffff0000},

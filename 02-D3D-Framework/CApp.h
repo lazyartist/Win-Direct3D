@@ -1,11 +1,11 @@
 #pragma once
-#include <d3d9.h>
-#include <DirectXMath.h>
 #include "lib.h"
+//#include <d3d9.h>
+//#include <DirectXMath.h>
 #include "CD3DFramework.h"
 
 using namespace DirectX;
-//class CD3DFramework;
+
 class CApp {
 public:
 	CApp();

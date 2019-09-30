@@ -23,7 +23,7 @@
     <ProjectGuid>{1A88EF8F-4D12-41F8-8907-F238B35D74EF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>WinDirect3D</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
     <ProjectName>01-Direct3D-Basic</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

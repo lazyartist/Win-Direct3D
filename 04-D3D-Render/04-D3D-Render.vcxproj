@@ -23,7 +23,7 @@
     <ProjectGuid>{A6E115FA-93ED-4E8C-844C-5D4736C2569A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>My04D3DRender</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -103,7 +103,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions);_XM_SSE_INTRINSICS_</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>..\02-D3D-Framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
@@ -151,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="04-D3D-Render.h" />
     <ClInclude Include="CAppAxisTriangle.h" />
+    <ClInclude Include="CAppCube.h" />
     <ClInclude Include="CAppTriangle.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="04-D3D-Render.cpp" />
     <ClCompile Include="CAppAxisTriangle.cpp" />
+    <ClCompile Include="CAppCube.cpp" />
     <ClCompile Include="CAppTriangle.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
