@@ -27,13 +27,16 @@
     <ClInclude Include="04-D3D-Render.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CAppTriangle.h">
+    <ClInclude Include="_01_CAppTriangle.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CAppAxisTriangle.h">
+    <ClInclude Include="_02_CAppAxisTriangle.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="CAppCube.h">
+    <ClInclude Include="_03_CAppCube.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="_04_CAppMesh.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,13 +47,16 @@
     <ClCompile Include="04-D3D-Render.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CAppTriangle.cpp">
+    <ClCompile Include="_01_CAppTriangle.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CAppAxisTriangle.cpp">
+    <ClCompile Include="_02_CAppAxisTriangle.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="CAppCube.cpp">
+    <ClCompile Include="_03_CAppCube.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="_04_CAppMesh.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

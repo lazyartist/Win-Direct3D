@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include <iostream>
-#include "CAppTriangle.h"
+#include "_01_CAppTriangle.h"
 #include "CD3DFramework.h"
 #include "lib.h"
 

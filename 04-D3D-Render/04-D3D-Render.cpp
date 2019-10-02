@@ -2,9 +2,10 @@
 #include "04-D3D-Render.h"
 #include "CD3DFramework.h"
 //#include "CApp.h"
-#include "CAppCube.h"
-#include "CAppTriangle.h"
-#include "CAppAxisTriangle.h"
+#include "_01_CAppTriangle.h"
+#include "_02_CAppAxisTriangle.h"
+#include "_03_CAppCube.h"
+#include "_04_CAppMesh.h"
 #include "lib.h"
 
 #define MAX_LOADSTRING 100
@@ -16,9 +17,10 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름�
 
 HWND g_hWnd;
 CD3DFramework g_cD3DFramework;
-CAppCube g_cApp;
-//CAppAxisTriangle g_cApp;
 //CAppTriangle g_cApp;
+//CAppAxisTriangle g_cApp;
+//CAppCube g_cApp;
+CAppMesh g_cApp;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);

@@ -105,11 +105,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions);_XM_SSE_INTRINSICS_</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\02-D3D-Framework;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\02-D3D-Framework;%(AdditionalIncludeDirectories);..\DirectX9\Include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>..\DirectX9\Lib\x86\d3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -150,18 +151,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="04-D3D-Render.h" />
-    <ClInclude Include="CAppAxisTriangle.h" />
-    <ClInclude Include="CAppCube.h" />
-    <ClInclude Include="CAppTriangle.h" />
+    <ClInclude Include="_04_CAppMesh.h" />
+    <ClInclude Include="_02_CAppAxisTriangle.h" />
+    <ClInclude Include="_03_CAppCube.h" />
+    <ClInclude Include="_01_CAppTriangle.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="04-D3D-Render.cpp" />
-    <ClCompile Include="CAppAxisTriangle.cpp" />
-    <ClCompile Include="CAppCube.cpp" />
-    <ClCompile Include="CAppTriangle.cpp" />
+    <ClCompile Include="_04_CAppMesh.cpp" />
+    <ClCompile Include="_02_CAppAxisTriangle.cpp" />
+    <ClCompile Include="_03_CAppCube.cpp" />
+    <ClCompile Include="_01_CAppTriangle.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
