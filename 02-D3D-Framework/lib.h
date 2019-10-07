@@ -11,6 +11,7 @@
 #pragma comment(lib,"winmm")
 #include <d3d9.h>
 #include <DirectXMath.h>
+#include <d3dx9math.h>
 //#include <DirectXMath.h>
 
 using namespace DirectX;
