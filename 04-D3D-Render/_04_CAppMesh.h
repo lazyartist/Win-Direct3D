@@ -5,8 +5,7 @@ class CAppMesh : public CApp
 {
 public:
 	CAppMesh();
-	~CAppMesh();
-
+	virtual ~CAppMesh();
 	virtual void OnInit();;
 	virtual void OnUpdate(DWORD fDeltaTime);
 	virtual void OnRender(DWORD fDeltaTime);

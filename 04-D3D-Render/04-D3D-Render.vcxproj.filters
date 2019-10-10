@@ -39,6 +39,9 @@
     <ClInclude Include="_04_CAppMesh.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="_05_CAppTerrain.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -57,6 +60,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="_04_CAppMesh.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="_05_CAppTerrain.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

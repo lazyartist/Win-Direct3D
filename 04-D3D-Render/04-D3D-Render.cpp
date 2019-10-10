@@ -6,6 +6,7 @@
 #include "_02_CAppAxisTriangle.h"
 #include "_03_CAppCube.h"
 #include "_04_CAppMesh.h"
+#include "_05_CAppTerrain.h"
 #include "lib.h"
 
 #define MAX_LOADSTRING 100
@@ -20,7 +21,8 @@ CD3DFramework g_cD3DFramework;
 //CAppTriangle g_cApp;
 //CAppAxisTriangle g_cApp;
 //CAppCube g_cApp;
-CAppMesh g_cApp;
+//CAppMesh g_cApp;
+CAppTerrain g_cApp;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
