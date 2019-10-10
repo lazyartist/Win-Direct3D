@@ -119,6 +119,20 @@ void CD3DFramework::Update() {
 		vCameraEye += vNormal * 0.1;
 		vCameraAt += vNormal * 0.1;
 	}
+	if (GetAsyncKeyState('W') < 0) {
+		//바라보는 방향으로 이동 
+		D3DXVECTOR3 vCameraLook = vCameraEye - vCameraAt;
+		D3DXVec3Normalize(&vCameraLook, &vCameraLook);
+		vCameraEye -= vCameraLook * 0.1;
+		vCameraAt -= vCameraLook * 0.1;
+	}
+	if (GetAsyncKeyState('S') < 0) {
+		//바라보는 방향으로 이동 
+		D3DXVECTOR3 vCameraLook = vCameraEye - vCameraAt;
+		D3DXVec3Normalize(&vCameraLook, &vCameraLook);
+		vCameraEye += vCameraLook * 0.1;
+		vCameraAt += vCameraLook * 0.1;
+	}
 	//카메라 좌로 회전
 	if (GetAsyncKeyState('Q') < 0) {
 		//바라보는 방향에서 좌로 평행이동 
@@ -161,6 +175,9 @@ void CD3DFramework::Render() {
 	//용도1. pD3DInterface 메모리 컨트롤
 	//용도2. BeginScene()을 호출하면 메모리에 단독으로 액세스 할 수 있기 때문에 비디오 RAM 버퍼를 잠금 또는 해지할 때 사용
 	if (SUCCEEDED(pD3DDevice->BeginScene())) {
+		//여기서 App에 구현된 화면을 그린다.
+		pApp->Render(dDeltaTime);
+
 		//축그리기 ----- s
 		//World transformation
 		//XMMATRIX matWorld = XMMatrixScaling(1.0, 1.0, 1.0)//크기행렬
@@ -226,8 +243,7 @@ void CD3DFramework::Render() {
 		//축그리기 ----- e
 
 
-		//여기서 화면을 그린다.
-		pApp->Render(dDeltaTime);
+		
 		//BeginScene()로 잠금해지된 비디오 메모리를 잠근다.
 		pD3DDevice->EndScene();
 		//백버퍼를 프론트버퍼로 교환(플리핑)한다.

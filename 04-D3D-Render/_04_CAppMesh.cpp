@@ -20,46 +20,45 @@ void CAppMesh::OnInit() {
 }
 
 void CAppMesh::OnUpdate(DWORD fDeltaTime) {
+	if (GetAsyncKeyState(VK_UP) < 0) {
+		//메쉬를 앞으로 이동, 메쉬의 정면 벡터의 초기값은 {0, 0, 1}이고 회전에 따라 방향이 바뀐다.
+		D3DXVECTOR4 vMeshFront = {};
+		D3DXMATRIX matFront;
+		D3DXMatrixRotationY(&matFront, vMeshRotation.y);//회전행렬
+		D3DXVec3Transform(&vMeshFront, &vMESH_FRONT/*(0,0,1)*/, &matFront);//메쉬정면 벡터를 회전
+		D3DXVec4Normalize(&vMeshFront, &vMeshFront);//정면벡터 정규화
+		vMeshTranslation += (D3DXVECTOR3)vMeshFront * 0.1;//현재 메쉬의 위치에 정면벡터를 더해서 이동시킨다.
+	}
+	if (GetAsyncKeyState(VK_DOWN) < 0) {
+		//메쉬를 앞으로 이동, 메쉬의 정면 벡터의 초기값은 {0, 0, 1}이고 회전에 따라 방향이 바뀐다.
+		D3DXVECTOR4 vMeshFront = {};
+		D3DXMATRIX matFront;
+		D3DXMatrixRotationY(&matFront, vMeshRotation.y);//회전행렬
+		D3DXVec3Transform(&vMeshFront, &vMESH_FRONT/*(0,0,1)*/, &matFront);//메쉬정면 벡터를 회전
+		D3DXVec4Normalize(&vMeshFront, &vMeshFront);//정면벡터 정규화
+		vMeshTranslation -= (D3DXVECTOR3)vMeshFront * 0.1;//현재 메쉬의 위치에 정면벡터를 더해서 이동시킨다.
+	}
+	if (GetAsyncKeyState(VK_LEFT) < 0) {
+		//메쉬를 좌(CCW)로 회전
+		vMeshRotation.y -= 0.1;
+	}
+	if (GetAsyncKeyState(VK_RIGHT) < 0) {
+		//메쉬를 우(CW)로 회전
+		vMeshRotation.y += 0.1;
+	}
 }
 
 void CAppMesh::OnRender(DWORD fDeltaTime) {
 	//World transformation
-	XMMATRIX matWorld = XMMatrixScaling(1.0, 1.0, 1.0)//크기행렬
-		*XMMatrixRotationX(0.0)//회전행렬
-		*XMMatrixTranslation(0.0, 0.0, 0.0);//이동행렬
-	XMFLOAT4X4 f44;
-	XMStoreFloat4x4(&f44, matWorld);
-	pD3DFramework->pD3DDevice->SetTransform(D3DTS_WORLD, (D3DMATRIX*)&f44);
-	//View transformation
-	D3DXMATRIX matView;
-	D3DXMatrixLookAtLH(&matView,
-		&pD3DFramework->vCameraEye,//카메라 위치
-		&pD3DFramework->vCameraAt,//바라보는 방향
-		&pD3DFramework->vCameraUp//카메라에서 위쪽으로 향하는 벡터
-		//{ 10.0, 20.0, -15.0 },//카메라 위치
-		//{ 0.0, 0.0, 0.0 },//바라보는 방향
-		//{ 0.0, 1.0, 0.0 }//카메라에서 위쪽으로 향하는 벡터
-	);
-	//XMStoreFloat4x4(&f44, matView);
-	//pD3DFramework->pD3DDevice->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&f44);
-	pD3DFramework->pD3DDevice->SetTransform(D3DTS_VIEW, &matView);
-	//Projection trasformation(원근법)
-	XMMATRIX matProj = XMMatrixPerspectiveFovLH( //FovLH : Field of view Left Hand
-		Const::fPI() / 2.0,
-		1.0,
-		1.0,//가까운 면의 Z값(음수를 넣으니 WM_SYSCOLORCHANGE가 계속와서 프로그램 진행이 안됨)
-		100.0//먼 면의 Z값
-	);
-	//Projection trasformation(직교투영)
-	//XMMATRIX matProj = XMMatrixOrthographicLH(
-	//	50.0,
-	//	50.0,
-	//	1.0,//가까운 면의 Z값(음수를 넣으니 WM_SYSCOLORCHANGE가 계속와서 프로그램 진행이 안됨)
-	//	100.0//먼 면의 Z값
-	//);
-	XMStoreFloat4x4(&f44, matProj);
-	pD3DFramework->pD3DDevice->SetTransform(D3DTS_PROJECTION, (D3DMATRIX*)&f44);
-
+	D3DXMATRIX matScale;
+	D3DXMATRIX matRotation;
+	D3DXMATRIX matTranslation;
+	D3DXMatrixScaling(&matScale, vMeshScale.x, vMeshScale.y, vMeshScale.z);//크기행렬
+	D3DXMatrixRotationY(&matRotation, vMeshRotation.y);//회전행렬
+	D3DXMatrixTranslation(&matTranslation, vMeshTranslation.x, vMeshTranslation.y, vMeshTranslation.z);//이동행렬
+	pD3DFramework->pD3DDevice->SetTransform(D3DTS_WORLD, &(matScale * matRotation * matTranslation));
+	//View, Projection transformation은 CD3DFramework에서 설정한다.
+	
 	//렌더링 상태 설정
 	//Light Off
 	//정점 쉐이더 작업을 하지 않을 때는 라이팅을 꺼줘야 버텍스 색상을 볼 수 있다.
@@ -86,12 +85,12 @@ void CAppMesh::OnRender(DWORD fDeltaTime) {
 }
 
 void CAppMesh::OnRelease() {
-	if (pCubeVertexBufferInterface != nullptr) {
-		pCubeVertexBufferInterface->Release();
-		pCubeVertexBufferInterface = nullptr;
-	}
-	if (pCubeIndexedBufferInterface != nullptr) {
-		pCubeIndexedBufferInterface->Release();
-		pCubeIndexedBufferInterface = nullptr;
-	}
+	//if (pCubeVertexBufferInterface != nullptr) {
+	//	pCubeVertexBufferInterface->Release();
+	//	pCubeVertexBufferInterface = nullptr;
+	//}
+	//if (pCubeIndexedBufferInterface != nullptr) {
+	//	pCubeIndexedBufferInterface->Release();
+	//	pCubeIndexedBufferInterface = nullptr;
+	//}
 }
