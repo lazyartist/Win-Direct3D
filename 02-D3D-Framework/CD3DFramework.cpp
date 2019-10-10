@@ -198,10 +198,10 @@ void CD3DFramework::Render() {
 		pD3DDevice->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&pMatView);
 		//Projection trasformation(원근법)
 		XMMATRIX matProj = XMMatrixPerspectiveFovLH( //Field of view Left Hand
-			Const::fPI() / 2.0,
+			Const::fPI() * 0.4,
 			1.0,
 			1.0,//가까운 면의 Z값(음수를 넣으니 WM_SYSCOLORCHANGE가 계속와서 프로그램 진행이 안됨)
-			100.0//먼 면의 Z값
+			200.0//먼 면의 Z값
 		);
 		//Projection trasformation(직교투영)
 		//XMMATRIX matProj = XMMatrixOrthographicLH(

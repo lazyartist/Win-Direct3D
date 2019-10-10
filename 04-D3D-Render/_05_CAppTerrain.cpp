@@ -16,7 +16,12 @@ void CAppTerrain::OnInit() {
 	{
 		int iRow = i / iTerrainVertexCol;
 		int iCol = i % iTerrainVertexCol;
-		vTerrainVertices[i] = { (float)iCol * fTerrainTriangleScale, 0.0f, (float)iRow * -fTerrainTriangleScale, 0xffffffff };
+		//평평한 지형
+		//vTerrainVertices[i] = { (float)iCol * fTerrainTriangleScale, 0.0f, (float)iRow * -fTerrainTriangleScale, 0xffffffff };
+		//가운데가 솟아오른 지형
+		vTerrainVertices[i] = { (float)iCol * fTerrainTriangleScale, 
+			-(sin(D3DX_PI * 2.0f / iTerrainVertexCount * i + D3DX_PI * 0.5f)) * fTerrainHeight + fTerrainHeight, 
+			(float)iRow * -fTerrainTriangleScale, 0xffffffff };
 	}
 
 	//버텍스버퍼 생성
@@ -44,30 +49,54 @@ void CAppTerrain::OnInit() {
 	int iTriangleCount = (iTerrainVertexRow - 1) * iTriangleColCount;
 
 	//버텍스인덱스 생성
+	//방법1. 좌상에서 우하로 나뉘는 삼각형
+	//이 방식의 장점은 사각형 단위로 그리기 때문에 로직이 단순하다.
 	int iIndicesCount = iTriangleCount * 3;
 	vTerrainIndices = new WORD[iIndicesCount];
-	for (size_t i = 0; i < iTriangleCount; i++)
+	for (size_t i = 0; i < iTriangleCount; i+=2)
 	{
 		int iTriangleRow = i / iTriangleColCount;//현재 삼각형의 행번호
 		//가장 오른쪽 정점은 삼각형을 만들지 않으므로 다음 행 첫번째 정점으로 건너뛰기 위해 행번호를 더해준다.
-		int iVerticesIndex = iTriangleRow;
-		int iIndicesIndex = 0;
-		iIndicesIndex = i * 3;
-		if (i % 2 == 0) {
-			//짝수번째 삼각형은 →↙↑이렇게 그린다.
-			iVerticesIndex += i / 2;
-			vTerrainIndices[iIndicesIndex] = iVerticesIndex;
-			vTerrainIndices[iIndicesIndex + 1] = iVerticesIndex + 1;
-			vTerrainIndices[iIndicesIndex + 2] = iVerticesIndex + iTerrainVertexCol;
-		}
-		else {
-			//홀수번째 삼각형은 ↓←↗이렇게 그린다.
-			iVerticesIndex += i - (int)(i / 2);
-			vTerrainIndices[iIndicesIndex] = iVerticesIndex;
-			vTerrainIndices[iIndicesIndex + 1] = iVerticesIndex + iTerrainVertexCol;
-			vTerrainIndices[iIndicesIndex + 2] = iVerticesIndex + iTerrainVertexCol - 1;
-		}
+		int iVerticesIndex = iTriangleRow + i / 2;
+		int iIndicesIndex = i * 3;
+		//↘←↑
+		vTerrainIndices[iIndicesIndex] = iVerticesIndex;
+		vTerrainIndices[iIndicesIndex + 1] = iVerticesIndex + 1 + iTerrainVertexCol;
+		vTerrainIndices[iIndicesIndex + 2] = iVerticesIndex + iTerrainVertexCol;
+		//→↓↖
+		vTerrainIndices[iIndicesIndex + 3] = iVerticesIndex;
+		vTerrainIndices[iIndicesIndex + 4] = iVerticesIndex + 1;
+		vTerrainIndices[iIndicesIndex + 5] = iVerticesIndex + 1 + iTerrainVertexCol;
 	}
+
+	////버텍스인덱스 생성
+	////방법2. 좌하에서 우상으로 나뉘는 삼각형
+	////이 방식의 단점은 사각형 단위로 그리지 않고 삼각형 단위로 그리기 때문에 로직이 복잡하다.
+	////인덱스를 1부터 시작하면 가능하지만 1로 시작하는 것부터 복잡하다.
+	//int iIndicesCount = iTriangleCount * 3;
+	//vTerrainIndices = new WORD[iIndicesCount];
+	//for (size_t i = 0; i < iTriangleCount; i++)
+	//{
+	//	int iTriangleRow = i / iTriangleColCount;//현재 삼각형의 행번호
+	//	//가장 오른쪽 정점은 삼각형을 만들지 않으므로 다음 행 첫번째 정점으로 건너뛰기 위해 행번호를 더해준다.
+	//	int iVerticesIndex = iTriangleRow;
+	//	int iIndicesIndex = 0;
+	//	iIndicesIndex = i * 3;
+	//	if (i % 2 == 0) {
+	//		//짝수번째 삼각형은 →↙↑이렇게 그린다.
+	//		iVerticesIndex += i / 2;
+	//		vTerrainIndices[iIndicesIndex] = iVerticesIndex;
+	//		vTerrainIndices[iIndicesIndex + 1] = iVerticesIndex + 1;
+	//		vTerrainIndices[iIndicesIndex + 2] = iVerticesIndex + iTerrainVertexCol;
+	//	}
+	//	else {
+	//		//홀수번째 삼각형은 ↓←↗이렇게 그린다.
+	//		iVerticesIndex += i - (int)(i / 2);
+	//		vTerrainIndices[iIndicesIndex] = iVerticesIndex;
+	//		vTerrainIndices[iIndicesIndex + 1] = iVerticesIndex + iTerrainVertexCol;
+	//		vTerrainIndices[iIndicesIndex + 2] = iVerticesIndex + iTerrainVertexCol - 1;
+	//	}
+	//}
 
 	//인덱스버퍼 생성
 	pD3DFramework->pD3DDevice->CreateIndexBuffer(
@@ -143,7 +172,7 @@ void CAppTerrain::OnRender(DWORD fDeltaTime) {
 	//채우기모드를 와이어프레임으로 설정
 	pD3DFramework->pD3DDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_WIREFRAME);
 	//컬링을 하지 않도록 설정
-	//pD3DFramework->pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	pD3DFramework->pD3DDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	pD3DFramework->pD3DDevice->SetStreamSource(
 		0,//0으로 지정
