@@ -126,13 +126,15 @@ void CD3DFramework::Update() {
 		D3DXVECTOR4 vCameraAtResult;
 		D3DXVECTOR3 vCameraLook = vCameraEye - vCameraAt;
 		D3DXMatrixRotationAxis(&matRotation, &vCameraUp, -D3DX_PI / 180);
-		//vCameraAtResult = {
-		//	matRotation._11 * vCameraLook.x + matRotation._12 * vCameraLook.y + matRotation._13 * vCameraLook.z,
-		//	matRotation._21 * vCameraLook.x + matRotation._22 * vCameraLook.y + matRotation._23 * vCameraLook.z,
-		//	matRotation._31 * vCameraLook.x + matRotation._32 * vCameraLook.y + matRotation._33 * vCameraLook.z,
-		//	1.0,
-		//};
-		D3DXVec3Transform(&vCameraAtResult, &vCameraLook, &matRotation);
+		//DirectX는 벡터x행렬 방식이고 행 지준 저장방식을 사용한다.
+		//D3DXVec3Transform() 함수와 같은 연산이다.
+		vCameraAtResult = {
+			vCameraLook.x * matRotation._11 + vCameraLook.y * matRotation._21 + vCameraLook.z * matRotation._31,
+			vCameraLook.x * matRotation._12 + vCameraLook.y * matRotation._22 + vCameraLook.z * matRotation._32,
+			vCameraLook.x * matRotation._13 + vCameraLook.y * matRotation._23 + vCameraLook.z * matRotation._33,
+			1.0,
+		};
+		//D3DXVec3Transform(&vCameraAtResult, &vCameraLook, &matRotation);
 		vCameraAt = vCameraEye + D3DXVECTOR3(vCameraAtResult.x, vCameraAtResult.y, vCameraAtResult.z);
 	}
 	if (GetAsyncKeyState('E') < 0) {
@@ -141,13 +143,7 @@ void CD3DFramework::Update() {
 		D3DXVECTOR4 vCameraAtResult;
 		D3DXVECTOR3 vCameraLook = vCameraEye - vCameraAt;//카메라 위치를 기준으로하는 벡터
 		D3DXMatrixRotationAxis(&matRotation, &vCameraUp, D3DX_PI / 180);
-		//vCameraAtResult = {
-		//	matRotation._11 * vCameraLook.x + matRotation._12 * vCameraLook.y + matRotation._13 * vCameraLook.z,
-		//	matRotation._21 * vCameraLook.x + matRotation._22 * vCameraLook.y + matRotation._23 * vCameraLook.z,
-		//	matRotation._31 * vCameraLook.x + matRotation._32 * vCameraLook.y + matRotation._33 * vCameraLook.z,
-		//	1.0,
-		//};
-		D3DXVec3Transform(&vCameraAtResult, &vCameraLook, &matRotation);
+		D3DXVec3Transform(&vCameraAtResult, &vCameraLook, &matRotation);//벡터x행렬 연산
 		vCameraAt = vCameraEye + D3DXVECTOR3(vCameraAtResult.x, vCameraAtResult.y, vCameraAtResult.z);
 	}
 
