@@ -41,11 +41,10 @@ void CAppTerrain::OnInit() {
 	pVB->Unlock();//잠금을 해제
 
 	//버텍스개수로 삼각형개수 구하기
-	//=버텍스로우-1 * (버텍스컬럼+(버텍스컬럼-2))
-	//(VertexRow-1)*{VertexCol+(VertexCol-2)}
+	//=(버텍스로우-1) * (버텍스컬럼-1)*2
 	//첫번째 버텍스행은 무시(일직선의 버텍스들로는 삼각형을 만들 수 없기 때문)
-	//두번째 버텍스행부터 양끝 버텍스틑 삼각형 하나를 생성하고 그 중간 버텍스들은 삼각형 2개를 생성
-	int iTriangleColCount = (iTerrainVertexCol + (iTerrainVertexCol - 2));//한줄당 삼각형 개수
+	//두번째 버텍스행부터 가장 좌측 버텍스를 제외하고 모든 버텍스가 삼각형을 두개씩 생성
+	int iTriangleColCount = (iTerrainVertexCol - 1) * 2;//한줄당 삼각형 개수
 	int iTriangleCount = (iTerrainVertexRow - 1) * iTriangleColCount;
 
 	//버텍스인덱스 생성
@@ -56,7 +55,6 @@ void CAppTerrain::OnInit() {
 	for (size_t i = 0; i < iTriangleCount; i+=2)
 	{
 		int iTriangleRow = i / iTriangleColCount;//현재 삼각형의 행번호
-		//가장 오른쪽 정점은 삼각형을 만들지 않으므로 다음 행 첫번째 정점으로 건너뛰기 위해 행번호를 더해준다.
 		int iVerticesIndex = iTriangleRow + i / 2;
 		int iIndicesIndex = i * 3;
 		//↘←↑
@@ -183,7 +181,7 @@ void CAppTerrain::OnRender(DWORD fDeltaTime) {
 	//2. D3D에 정점 데이터를 어떻게 해석해하는지 설정한다.
 	pD3DFramework->pD3DDevice->SetFVF(D3DFVF_SVertex);
 
-	int iTriangleColCount = (iTerrainVertexCol + (iTerrainVertexCol - 2));//한줄당 삼각형 개수
+	int iTriangleColCount = (iTerrainVertexCol - 1) * 2;//한줄당 삼각형 개수
 	int iTriangleCount = (iTerrainVertexRow - 1) * iTriangleColCount;
 	//인덱스버퍼 입력
 	pD3DFramework->pD3DDevice->SetIndices(pIB);
