@@ -159,6 +159,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="_05_CAppTerrain.h" />
+    <ClInclude Include="_06_CAppFont.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="04-D3D-Render.cpp" />
@@ -173,6 +174,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="_05_CAppTerrain.cpp" />
+    <ClCompile Include="_06_CAppFont.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="04-D3D-Render.rc" />

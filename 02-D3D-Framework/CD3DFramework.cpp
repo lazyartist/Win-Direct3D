@@ -4,14 +4,10 @@
 #include <d3d9.h>
 #pragma comment (lib, "d3d9.lib")
 
-
 CD3DFramework::CD3DFramework() {
 }
-
-
 CD3DFramework::~CD3DFramework() {
 }
-
 HRESULT CD3DFramework::Init(HWND hWnd, CApp * pApp, float fFrameTime) {
 	this->hWnd = hWnd;
 	this->pApp = pApp;
@@ -73,6 +69,13 @@ HRESULT CD3DFramework::Init(HWND hWnd, CApp * pApp, float fFrameTime) {
 	memcpy(pVertices, sAxisVertices, sizeof(sAxisVertices));//버텍스버퍼에 버텍스를 메모리 복사
 	pAxisVertexBufferInterface->Unlock();//잠금을 해제
 
+	//폰트 초기화
+	D3DXCreateFont(pD3DDevice, 20, 0, FW_NORMAL,
+		1, false, DEFAULT_CHARSET,
+		OUT_DEFAULT_PRECIS, DEFAULT_QUALITY,
+		DEFAULT_PITCH | FF_DONTCARE,
+		"Arial", &pFont);
+
 	pApp->Init(this);
 
 	timeBeginPeriod(1);
@@ -84,6 +87,7 @@ bool CD3DFramework::UpdateFrame() {
 	if (dTime - dPrevFrameTime >= fFrameTime) {
 		dDeltaTime = dTime - dPrevFrameTime;
 		dPrevFrameTime = dTime;
+
 		return true;
 	}
 	return false;
@@ -240,7 +244,17 @@ void CD3DFramework::Render() {
 		);
 		//Light Off
 		pD3DDevice->SetRenderState(D3DRS_LIGHTING, true);
-		//축그리기 ----- e
+		//축그리기 ----- end
+
+		//FPS 출력
+		char szTime[99] = {};
+		sprintf_s(szTime, 99, "%.1f(%d)", 1000.0/dDeltaTime, dDeltaTime);
+		RECT rect;
+		SetRect(&rect, 720, 0, 0, 0);
+		pFont->DrawText(nullptr, szTime,
+			-1/*문자개수, -1:NULL문자까지 출력*/, &rect, DT_NOCLIP,
+			D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		//FPS 출력 ----- end
 
 
 		

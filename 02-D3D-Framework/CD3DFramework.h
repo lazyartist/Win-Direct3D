@@ -34,6 +34,7 @@ public:
 	LPDIRECT3DVERTEXBUFFER9 pAxisVertexBufferInterface;//축 버텍스버퍼 인터페이스
 	LPDIRECT3D9 pD3DInterface;
 	LPDIRECT3DDEVICE9 pD3DDevice;
+	LPD3DXFONT pFont;
 	HWND hWnd;
 	CApp *pApp;
 	DWORD dPrevFrameTime;
