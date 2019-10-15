@@ -95,14 +95,14 @@ bool CD3DFramework::UpdateFrame() {
 
 void CD3DFramework::Update() {
 	//camera up
-	{
-		D3DXVECTOR3 vNormal1, vNormal2;
-		D3DXVECTOR3 vCameraLook = vCameraEye - vCameraAt;
-		D3DXVec3Cross(&vNormal1, &vCameraLook, &vCameraUp);
-		D3DXVec3Cross(&vNormal2, &vNormal1, &vCameraLook);
-		D3DXVec3Normalize(&vNormal2, &vNormal2);
-		vCameraUp = vNormal2;
-	}
+	//{
+	//	D3DXVECTOR3 vNormal1, vNormal2;
+	//	D3DXVECTOR3 vCameraLook = vCameraEye - vCameraAt;
+	//	D3DXVec3Cross(&vNormal1, &vCameraLook, &vCameraUp);
+	//	D3DXVec3Cross(&vNormal2, &vNormal1, &vCameraLook);
+	//	D3DXVec3Normalize(&vNormal2, &vNormal2);
+	//	vCameraUp = vNormal2;
+	//}
 
 	if (GetAsyncKeyState('A') < 0) {
 		//바라보는 방향에서 좌로 평행이동 
@@ -131,21 +131,55 @@ void CD3DFramework::Update() {
 		vCameraAt -= vCameraLook * 0.1;
 	}
 	if (GetAsyncKeyState('S') < 0) {
-		//바라보는 방향으로 이동 
+		//바라보는 방향의 뒤로 이동 
 		D3DXVECTOR3 vCameraLook = vCameraEye - vCameraAt;
 		D3DXVec3Normalize(&vCameraLook, &vCameraLook);
 		vCameraEye += vCameraLook * 0.1;
 		vCameraAt += vCameraLook * 0.1;
 	}
-	//카메라 좌로 회전
-	if (GetAsyncKeyState('Q') < 0) {
-		//바라보는 방향에서 좌로 평행이동 
+	if (GetAsyncKeyState(VK_SPACE) < 0) {
+		//바라보는 방향의 위로 이동 
+		D3DXVECTOR3 vCameraVertical = vCameraUp;
+		D3DXVec3Normalize(&vCameraVertical, &vCameraVertical);
+		vCameraEye += vCameraVertical * 0.1;
+		vCameraAt += vCameraVertical * 0.1;
+	}
+	if (GetAsyncKeyState(VK_SHIFT) < 0) {
+		//바라보는 방향의 아래로 이동 
+		D3DXVECTOR3 vCameraVertical = vCameraUp;
+		D3DXVec3Normalize(&vCameraVertical, &vCameraVertical);
+		vCameraEye -= vCameraVertical * 0.1;
+		vCameraAt -= vCameraVertical * 0.1;
+	}
+	if (GetAsyncKeyState(VK_RBUTTON) < 0) {
+		//마우스 우클릭 후 카메라 회전
+		//prev mouse position
+		if (bRButtonDown == false) {
+			GetCursorPos(&m_xyRButtonDown);
+			vRButtonDownCameraAt = vCameraAt;
+		}
+		bRButtonDown = true;
+		//current mouse position
+		POINT xyRButtonDown;
+		GetCursorPos(&xyRButtonDown);
+		//distance vector
+		D3DXVECTOR2 vPrev = { (float)m_xyRButtonDown.x, (float)m_xyRButtonDown.y };
+		D3DXVECTOR2 vCurr = { (float)xyRButtonDown.x, (float)xyRButtonDown.y };
+		D3DXVECTOR2 vDist = vPrev - vCurr;
+		//Y축 회전
+		D3DXMATRIX matRotationY;
+		D3DXMatrixRotationAxis(&matRotationY, &vCameraUp, -vDist.x / 300);
+		//X축 회전
+		D3DXVECTOR3 vCameraX = {};
+		D3DXVECTOR3 vCameraLook = vRButtonDownCameraAt - vCameraEye;
+		D3DXVec3Cross(&vCameraX, &vCameraUp, &vCameraLook);
+		D3DXMATRIX matRotationX;
+		D3DXMatrixRotationAxis(&matRotationX, &vCameraX, -vDist.y / 300);
 		D3DXMATRIX matRotation;
+		matRotation = matRotationX * matRotationY;
+		//D3DXVec3Transform() 함수를 사용해도 아래와 같은 행렬연산을 할 수 있다.
+		//DirectX는 벡터x행렬 방식이고 행 기준 저장방식을 사용한다.
 		D3DXVECTOR4 vCameraAtResult;
-		D3DXVECTOR3 vCameraLook = vCameraEye - vCameraAt;
-		D3DXMatrixRotationAxis(&matRotation, &vCameraUp, -D3DX_PI / 180);
-		//DirectX는 벡터x행렬 방식이고 행 지준 저장방식을 사용한다.
-		//D3DXVec3Transform() 함수와 같은 연산이다.
 		vCameraAtResult = {
 			vCameraLook.x * matRotation._11 + vCameraLook.y * matRotation._21 + vCameraLook.z * matRotation._31,
 			vCameraLook.x * matRotation._12 + vCameraLook.y * matRotation._22 + vCameraLook.z * matRotation._32,
@@ -155,14 +189,8 @@ void CD3DFramework::Update() {
 		//D3DXVec3Transform(&vCameraAtResult, &vCameraLook, &matRotation);
 		vCameraAt = vCameraEye + D3DXVECTOR3(vCameraAtResult.x, vCameraAtResult.y, vCameraAtResult.z);
 	}
-	if (GetAsyncKeyState('E') < 0) {
-		//바라보는 방향에서 좌로 평행이동 
-		D3DXMATRIX matRotation;
-		D3DXVECTOR4 vCameraAtResult;
-		D3DXVECTOR3 vCameraLook = vCameraEye - vCameraAt;//카메라 위치를 기준으로하는 벡터
-		D3DXMatrixRotationAxis(&matRotation, &vCameraUp, D3DX_PI / 180);
-		D3DXVec3Transform(&vCameraAtResult, &vCameraLook, &matRotation);//벡터x행렬 연산
-		vCameraAt = vCameraEye + D3DXVECTOR3(vCameraAtResult.x, vCameraAtResult.y, vCameraAtResult.z);
+	else {
+		bRButtonDown = false;
 	}
 
 	pApp->Update(dDeltaTime);
@@ -178,7 +206,10 @@ void CD3DFramework::Render() {
 	//pD3DInterface에서 비디오 메모리를 컨트롤 하기 위해 잠금을 해지한다.
 	//용도1. pD3DInterface 메모리 컨트롤
 	//용도2. BeginScene()을 호출하면 메모리에 단독으로 액세스 할 수 있기 때문에 비디오 RAM 버퍼를 잠금 또는 해지할 때 사용
-	if (SUCCEEDED(pD3DDevice->BeginScene())) {
+	auto result = SUCCEEDED(pD3DDevice->BeginScene());
+	dlog(result);
+	if (result) {
+	//if (SUCCEEDED(pD3DDevice->BeginScene())) {
 		//여기서 App에 구현된 화면을 그린다.
 		pApp->Render(dDeltaTime);
 
@@ -198,6 +229,7 @@ void CD3DFramework::Render() {
 			&vCameraAt,//바라보는 방향
 			&vCameraUp//카메라에서 위쪽으로 향하는 벡터
 		);
+		dlog("vCameraAt", (float)vCameraAt.x, (float)vCameraAt.y, (float)vCameraAt.z);
 		//XMStoreFloat4x4(&f44, pMatView);
 		pD3DDevice->SetTransform(D3DTS_VIEW, (D3DMATRIX*)&pMatView);
 		//Projection trasformation(원근법)

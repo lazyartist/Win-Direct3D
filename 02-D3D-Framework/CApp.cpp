@@ -20,12 +20,12 @@ void CApp::Init(CD3DFramework *pD3DFramework) {
 }
 
 void CApp::Update(DWORD fDeltaTime) {
-	dlog("Update");
+	//dlog("Update");
 	OnUpdate(fDeltaTime);
 }
 
 void CApp::Render(DWORD fDeltaTime) {
-	dlog("Render");
+	//dlog("Render");
 	OnRender(fDeltaTime);
 }
 

@@ -40,5 +40,9 @@ public:
 	DWORD dPrevFrameTime;
 	DWORD dDeltaTime;
 	float fFrameTime;
+	//RButton Rotation
+	bool bRButtonDown;
+	POINT m_xyRButtonDown;
+	D3DXVECTOR3 vRButtonDownCameraAt = { 0.0, 0.0 , 0.0 };
 };
 
