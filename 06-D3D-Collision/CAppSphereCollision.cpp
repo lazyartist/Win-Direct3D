@@ -41,7 +41,7 @@ void CAppSphereCollision::OnRender(DWORD fDeltaTime) {
 	D3DXMATRIX matScale;
 	D3DXMATRIX matRotation;
 	D3DXMATRIX matTranslation;
-	//draw mesh
+	//draw original boundingn sphere
 	D3DXMatrixScaling(&matScale, fRadius, fRadius, fRadius);
 	D3DXMatrixRotationYawPitchRoll(&matRotation, 1.0f, 1.0f, 1.0f);
 	D3DXMatrixTranslation(&matTranslation, vCenter.x, vCenter.y, vCenter.z);

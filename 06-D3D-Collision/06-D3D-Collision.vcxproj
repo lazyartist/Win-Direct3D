@@ -150,6 +150,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="06-D3D-Collision.h" />
+    <ClInclude Include="CAppBoxCollision.h" />
     <ClInclude Include="CAppSphereCollision.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="06-D3D-Collision.cpp" />
+    <ClCompile Include="CAppBoxCollision.cpp" />
     <ClCompile Include="CAppSphereCollision.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
