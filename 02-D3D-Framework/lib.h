@@ -26,6 +26,13 @@ struct SVertex2{
 	XMFLOAT3 position;
 	DWORD color;
 };
+//#define D3DFVF_SVertex3 (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE)
+#define D3DFVF_SVertex3 (D3DFVF_XYZ | D3DFVF_NORMAL)
+struct SVertex3 {
+	D3DXVECTOR3 xyz;
+	D3DXVECTOR3 normal;
+	//DWORD diffuse;
+};
 #define D3DFVF_SVertexRHW (D3DFVF_XYZRHW | D3DFVF_DIFFUSE)
 struct SVertexRHW {
 	float x, y, z, rhw;

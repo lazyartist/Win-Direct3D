@@ -1,9 +1,9 @@
 ﻿#include "stdafx.h"
-#include "06-D3D-Collision.h"
+#include "07-D3D-Material.h"
 #include "CD3DFramework.h"
 #include "lib.h"
-#include "CAppSphereCollision.h"
-#include "CAppBoxCollision.h"
+#include "CAppMaterial.h"
+//#include "CAppBoxCollision.h"
 
 #define MAX_LOADSTRING 100
 
@@ -15,7 +15,7 @@ WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름�
 HWND g_hWnd;
 CD3DFramework g_cD3DFramework;
 //CAppSphereCollision g_cApp;
-CAppBoxCollision g_cApp;
+CAppMaterial g_cApp;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -33,7 +33,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// 전역 문자열을 초기화합니다.
 	LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
-	LoadStringW(hInstance, IDC_MY06D3DCOLLISION, szWindowClass, MAX_LOADSTRING);
+	LoadStringW(hInstance, IDC_MY07D3DMATERIAL, szWindowClass, MAX_LOADSTRING);
 	MyRegisterClass(hInstance);
 
 	// 응용 프로그램 초기화를 수행합니다:
@@ -67,10 +67,10 @@ ATOM MyRegisterClass(HINSTANCE hInstance) {
 	wcex.cbClsExtra = 0;
 	wcex.cbWndExtra = 0;
 	wcex.hInstance = hInstance;
-	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MY06D3DCOLLISION));
+	wcex.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_MY07D3DMATERIAL));
 	wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
 	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-	wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_MY06D3DCOLLISION);
+	wcex.lpszMenuName = MAKEINTRESOURCEW(IDC_MY07D3DMATERIAL);
 	wcex.lpszClassName = szWindowClass;
 	wcex.hIconSm = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
