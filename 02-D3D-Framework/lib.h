@@ -33,6 +33,12 @@ struct SVertex3 {
 	D3DXVECTOR3 normal;
 	//DWORD diffuse;
 };
+#define D3DFVF_SVertexTexture (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX1)
+struct SVertexTexture {
+	D3DXVECTOR3 xyz;
+	D3DXVECTOR3 normal;
+	float tu, tv;
+};
 #define D3DFVF_SVertexRHW (D3DFVF_XYZRHW | D3DFVF_DIFFUSE)
 struct SVertexRHW {
 	float x, y, z, rhw;
