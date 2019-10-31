@@ -29,6 +29,8 @@ static UINT indicators[] =
 	ID_INDICATOR_SCRL,
 };
 
+extern CMy10D3DMFCView *g_pView;
+
 // CMainFrame 생성/소멸
 
 CMainFrame::CMainFrame() noexcept {
@@ -95,13 +97,16 @@ BOOL CMainFrame::OnCreateClient(LPCREATESTRUCT /*lpcs*/,
 	)) {
 		return false;
 	};
+
+	g_pView = (CMy10D3DMFCView *)m_wndSplitter.GetPane(0, 0);
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs) {
 	if (!CFrameWnd::PreCreateWindow(cs))
 		return FALSE;
-	// TODO: CREATESTRUCT cs를 수정하여 여기에서
-	//  Window 클래스 또는 스타일을 수정합니다.
+
+	cs.style &= ~FWS_ADDTOTITLE;
+	SetTitle(TEXT("MFC Multi View"));
 
 	return TRUE;
 }
@@ -121,3 +126,13 @@ void CMainFrame::Dump(CDumpContext& dc) const {
 
 // CMainFrame 메시지 처리기
 
+
+BEGIN_MESSAGE_MAP(CSpiltterWndStatic, CSplitterWnd)
+	ON_WM_NCHITTEST()
+END_MESSAGE_MAP()
+
+CSpiltterWndStatic::CSpiltterWndStatic() {}
+CSpiltterWndStatic::~CSpiltterWndStatic() {}
+LRESULT CSpiltterWndStatic::OnNcHitTest(CPoint point) {
+	return HTNOWHERE;
+}

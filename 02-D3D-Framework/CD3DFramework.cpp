@@ -30,6 +30,8 @@ HRESULT CD3DFramework::Init(HWND hWnd, CApp * pApp, float fFrameTime) {
 	sD3DParam.SwapEffect = D3DSWAPEFFECT_DISCARD;
 	//현재 윈도우와 동일한 색상 정보를 갖는 백버퍼를 사용
 	sD3DParam.BackBufferFormat = D3DFMT_UNKNOWN;
+	//
+	sD3DParam.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;//즉시 플리핑
 	//Direct3D를 사용할 윈도우 핸들
 	sD3DParam.hDeviceWindow = hWnd;
 	//D3D 파라미터의 z버퍼 설정
@@ -280,7 +282,7 @@ void CD3DFramework::Render() {
 
 		//FPS 출력
 		char szTime[99] = {};
-		sprintf_s(szTime, 99, "%.1f(%d)", 1000.0/dDeltaTime, dDeltaTime);
+		sprintf_s(szTime, 99, "%.1ffps(%d)", 1000.0/dDeltaTime, dDeltaTime);
 		RECT rect;
 		SetRect(&rect, 720, 0, 0, 0);
 		pFont->DrawText(nullptr, szTime,

@@ -28,8 +28,7 @@ END_MESSAGE_MAP()
 
 // CMy10D3DMFCApp 생성
 
-CMy10D3DMFCApp::CMy10D3DMFCApp() noexcept
-{
+CMy10D3DMFCApp::CMy10D3DMFCApp() noexcept {
 	// TODO: 아래 응용 프로그램 ID 문자열을 고유 ID 문자열로 바꾸십시오(권장).
 	// 문자열에 대한 서식: CompanyName.ProductName.SubProduct.VersionInformation
 	SetAppID(_T("My10D3DMFC.AppID.NoVersion"));
@@ -41,12 +40,12 @@ CMy10D3DMFCApp::CMy10D3DMFCApp() noexcept
 // 유일한 CMy10D3DMFCApp 개체입니다.
 
 CMy10D3DMFCApp theApp;
+CMy10D3DMFCView *g_pView;
 
 
 // CMy10D3DMFCApp 초기화
 
-BOOL CMy10D3DMFCApp::InitInstance()
-{
+BOOL CMy10D3DMFCApp::InitInstance() {
 	// 응용 프로그램 매니페스트가 ComCtl32.dll 버전 6 이상을 사용하여 비주얼 스타일을
 	// 사용하도록 지정하는 경우, Windows XP 상에서 반드시 InitCommonControlsEx()가 필요합니다. 
 	// InitCommonControlsEx()를 사용하지 않으면 창을 만들 수 없습니다.
@@ -111,12 +110,11 @@ BOOL CMy10D3DMFCApp::InitInstance()
 
 // 응용 프로그램 정보에 사용되는 CAboutDlg 대화 상자입니다.
 
-class CAboutDlg : public CDialogEx
-{
+class CAboutDlg : public CDialogEx {
 public:
 	CAboutDlg() noexcept;
 
-// 대화 상자 데이터입니다.
+	// 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_ABOUTBOX };
 #endif
@@ -129,12 +127,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-CAboutDlg::CAboutDlg() noexcept : CDialogEx(IDD_ABOUTBOX)
-{
+CAboutDlg::CAboutDlg() noexcept : CDialogEx(IDD_ABOUTBOX) {
 }
 
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
+void CAboutDlg::DoDataExchange(CDataExchange* pDX) {
 	CDialogEx::DoDataExchange(pDX);
 }
 
@@ -142,8 +138,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
 END_MESSAGE_MAP()
 
 // 대화 상자를 실행하기 위한 응용 프로그램 명령입니다.
-void CMy10D3DMFCApp::OnAppAbout()
-{
+void CMy10D3DMFCApp::OnAppAbout() {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
 }
@@ -152,3 +147,21 @@ void CMy10D3DMFCApp::OnAppAbout()
 
 
 
+
+
+BOOL CMy10D3DMFCApp::OnIdle(LONG lCount) {
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	if (this->m_pMainWnd->IsIconic()) {
+		//최소화아이콘이면 OnIdle이 호출되지 않음
+		return false;
+	}
+	else {
+		//update, render
+		if (g_pView->m_pD3dFramework.UpdateFrame()) {
+			g_pView->m_pD3dFramework.Update();
+			g_pView->m_pD3dFramework.Render();
+		}
+	}
+	return true;
+	//return CWinApp::OnIdle(lCount);
+}

@@ -4,6 +4,16 @@
 
 #pragma once
 
+class CSpiltterWndStatic : public CSplitterWnd {
+public:
+	CSpiltterWndStatic();
+	~CSpiltterWndStatic();
+
+protected:
+	afx_msg LRESULT OnNcHitTest(CPoint point);
+	DECLARE_MESSAGE_MAP();
+};
+
 class CMainFrame : public CFrameWnd
 {
 	
@@ -13,8 +23,8 @@ protected: // serialization에서만 만들어집니다.
 
 // 특성입니다.
 protected:
-	//CSplitterWndEx m_wndSplitter;
-	CSplitterWnd m_wndSplitter;
+	//CSplitterWnd m_wndSplitter;
+	CSpiltterWndStatic m_wndSplitter;
 public:
 
 // 작업입니다.
@@ -43,5 +53,3 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 };
-
-

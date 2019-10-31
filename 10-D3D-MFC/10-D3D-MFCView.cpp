@@ -22,6 +22,7 @@
 IMPLEMENT_DYNCREATE(CMy10D3DMFCView, CView)
 
 BEGIN_MESSAGE_MAP(CMy10D3DMFCView, CView)
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 // CMy10D3DMFCView 생성/소멸
@@ -34,6 +35,7 @@ CMy10D3DMFCView::CMy10D3DMFCView() noexcept
 
 CMy10D3DMFCView::~CMy10D3DMFCView()
 {
+	m_pD3dFramework.Release();
 }
 
 BOOL CMy10D3DMFCView::PreCreateWindow(CREATESTRUCT& cs)
@@ -79,3 +81,19 @@ CMy10D3DMFCDoc* CMy10D3DMFCView::GetDocument() const // 디버그되지 않은 �
 
 
 // CMy10D3DMFCView 메시지 처리기
+
+
+void CMy10D3DMFCView::OnInitialUpdate() {
+	CView::OnInitialUpdate();
+
+	// TODO: 여기에 특수화된 코드를 추가 및/또는 기본 클래스를 호출합니다.
+	m_pD3dFramework.Init(m_hWnd/*View의 Wnd핸들*/, &m_cApp, 1000 / 60);
+}
+
+
+BOOL CMy10D3DMFCView::OnEraseBkgnd(CDC* pDC) {
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+
+	return false;
+	//return CView::OnEraseBkgnd(pDC);
+}

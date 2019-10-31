@@ -6,4 +6,7 @@ public:
 	CMenuFormView();
 	DECLARE_DYNCREATE(CMenuFormView)
 	~CMenuFormView();
+	virtual void OnInitialUpdate();
+	DECLARE_MESSAGE_MAP()
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };

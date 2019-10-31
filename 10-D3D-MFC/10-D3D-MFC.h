@@ -8,6 +8,7 @@
 #endif
 
 #include "resource.h"       // 주 기호입니다.
+#include "10-D3D-MFCView.h"
 
 
 // CMy10D3DMFCApp:
@@ -19,7 +20,6 @@ class CMy10D3DMFCApp : public CWinApp
 public:
 	CMy10D3DMFCApp() noexcept;
 
-
 // 재정의입니다.
 public:
 	virtual BOOL InitInstance();
@@ -27,6 +27,7 @@ public:
 // 구현입니다.
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
+	virtual BOOL OnIdle(LONG lCount);
 };
 
 extern CMy10D3DMFCApp theApp;

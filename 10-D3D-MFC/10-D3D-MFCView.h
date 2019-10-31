@@ -4,6 +4,8 @@
 
 #pragma once
 #include "10-D3D-MFCDoc.h"
+#include "CD3DFramework.h"
+#include "CAppMesh.h"
 
 class CMy10D3DMFCView : public CView
 {
@@ -14,6 +16,8 @@ protected: // serialization에서만 만들어집니다.
 // 특성입니다.
 public:
 	CMy10D3DMFCDoc* GetDocument() const;
+	CD3DFramework m_pD3dFramework;
+	CAppMesh m_cApp;
 
 // 작업입니다.
 public:
@@ -37,6 +41,9 @@ protected:
 // 생성된 메시지 맵 함수
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	virtual void OnInitialUpdate();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 #ifndef _DEBUG  // 10-D3D-MFCView.cpp의 디버그 버전
