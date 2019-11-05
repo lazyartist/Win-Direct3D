@@ -39,6 +39,9 @@
     <ClInclude Include="CMenuFormView.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="CAppMesh.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="10-D3D-MFC.cpp">
@@ -57,6 +60,9 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="CMenuFormView.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CAppMesh.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
